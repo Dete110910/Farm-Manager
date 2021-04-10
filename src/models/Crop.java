@@ -16,10 +16,11 @@ public class Crop {
 	
 	
 	
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground) {
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground, double amountSown) {
 		this.specie = specie;
 		this.seedTime = seedTime;
 		this.ground = ground;
+		this.amountSown = amountSown;
 	}
 	
 	public double getGrowthRatePercentage() {

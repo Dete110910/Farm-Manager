@@ -1,5 +1,7 @@
 package views;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import java.util.Scanner;
@@ -12,19 +14,30 @@ import java.util.Scanner;
 public class Console {
 	
 	private Scanner scanner;
-	public String MESSAGE_NAME_OF_FARM = "				Bienvenido al Software DARXS\nPara empezar por favor ingrese el nombre de su finca :";
-	public String ERROR_NAME = "\nEl nombre contiene menos de 4 caracteres, por favor intente nuevamente";
-	public String MESSAGE_READ_GROUND_ANIMALS = "Ingrese en metros cuadrados el terreno que sera designado al cuidado de animales";
-	public String ERROR_INVALIDATE_VALUE = "El valor ingresado no es correcto, intente nuevamente";
-	public String MESSAGE_METRIC_ERROR = "El terreno no es óptimo";
-	public String MESSAGE_INSUFICIENT_GROUND = "El terreno no concuerda con los valores dados anteriormente";
-	public String MESSAGE_READ_GROUND_CROPS = "Ingrese en metros cuadrados el terreno que sera designado para siembra de cultivos";
-	public String MESSAGE_READ_INITIAL_MONEY = "Ingrese la cantidad de dinero en COP con el que se iniciara la finca";
-	public String MESSAGE_READ_USERNAME = "Ingrese un nombre de usuario";
-	public String MESSAGE_READ_PASSWORD = "Ingrese una contraseña, antes de todo asegurese de que tenga:\n-Minimo 8 caracteres.\n-Una mayuscula.\n-Un numero";
-	public String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
-	public byte MINIMUM_LAND = 50;
-	
+	public static String MESSAGE_NAME_OF_FARM = "				Bienvenido al Software DARXS\nPara empezar por favor ingrese el nombre de su finca :";
+	public static String ERROR_NAME = "\nEl nombre contiene menos de 4 caracteres, por favor intente nuevamente";
+	public static String MESSAGE_READ_GROUND_ANIMALS = "Ingrese en metros cuadrados el terreno que sera designado al cuidado de animales";
+	public static String ERROR_INVALIDATE_VALUE = "El valor ingresado no es correcto, intente nuevamente";
+	public static String MESSAGE_METRIC_ERROR = "El terreno no es óptimo";
+	public static String MESSAGE_INSUFICIENT_GROUND = "El terreno no concuerda con los valores dados anteriormente";
+	public static String MESSAGE_READ_GROUND_CROPS = "Ingrese en metros cuadrados el terreno que sera designado para siembra de cultivos";
+	public static String MESSAGE_READ_INITIAL_MONEY = "Ingrese la cantidad de dinero en COP con el que se iniciara la finca";
+	public static String MESSAGE_READ_USERNAME = "Ingrese un nombre de usuario";
+	public static String MESSAGE_READ_PASSWORD = "Ingrese una contraseña, antes de todo asegurese de que tenga:\n-Minimo 8 caracteres.\n-Una mayuscula.\n-Un numero";
+	public static String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
+	public static byte 	 MINIMUM_LAND = 50;
+	public static String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
+	public static String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
+	public static String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
+	public static String MESSAGE_CROPS = "Cultivos \n"; 
+	public static String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
+	public static String MESSAGE_CROPS_MENU = "	\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás";
+	public static String MESSAGE_CHOOSE_TYPE_CROP = "";
+	public static String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = "1. Papa.\n2. Arveja.\n3. Frijol.\n4. Maiz";
+	public static final String FORMAT_OF_DATE = "d/M/yyyy";
+	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
+
+
 	
 	/**
 	 * Metodo constructor por default
@@ -33,14 +46,50 @@ public class Console {
 		scanner = new Scanner(System.in);
 	}
 	
+	
+	public void print(String string) {
+		System.out.println(string);
+	}
+	
+	/**
+	 * Método para elegir la opción deseada en el menú principal
+	 * @return opción elegida por el usuario
+	 */
+	public byte readOptionMainMenu() {
+		System.out.println(MESSAGE_CHOOSE_OPTION);
+		System.out.println(MESSAGE_MAIN_MENU);
+		String option = scanner.nextLine();
+		if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 6) {
+			System.err.println(ERROR_INVALID_OPTION);
+			return readOptionMainMenu();
+		}
+		return Byte.parseByte(option); 
+	}
+	
+	/**
+	 * Método para elegir la opción deseada en el menú de los cultivos
+	 * @return opción elegida por el usuario
+	 */
+	public byte readOptionMenuCrop() {
+		System.out.println(MESSAGE_CHOOSE_OPTION);
+		System.out.println(MESSAGE_CROPS_MENU);
+		String option = scanner.nextLine();
+		if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 5) {
+			System.out.println(ERROR_INVALID_OPTION);
+			return readOptionMenuCrop();
+		}
+		return Byte.parseByte(option);
+		
+	}
+	
 	/**
 	 * Metodo privado para determinar si una cadena de texto es o no numero
 	 * @param cadena : String a evaluar
 	 * @return true : Si es numero, false : No es numero
 	 */
-	private static boolean isNumeric(String cadena){
+	private static boolean isNumeric(String string){
 		try {
-			Double.parseDouble(cadena);
+			Double.parseDouble(string);
 			return true;
 		} catch (NumberFormatException nfe){
 			return false;
@@ -177,6 +226,32 @@ public class Console {
 		}
 		return password;
 	}
+	
+	public byte readPlantTypeOption() {
+		System.out.println(ERROR_INVALID_OPTION);
+		String option = scanner.nextLine();
+		while(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 4) {
+			System.out.println("Ponga el error");
+			option = scanner.nextLine();
+		}
+		return Byte.parseByte(option);
+	}
+	
+	public LocalDate readSeedTime(){
+		System.out.println(MESSAGE_FOR_ENTRY_SEED_DATE);
+		return this.validateSeedTime(scanner.nextLine());
+	}
+	
+	public LocalDate validateSeedTime(String seedTime){
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( FORMAT_OF_DATE );
+		return LocalDate.parse( seedTime, dateTimeFormatter );
+	}
+	
+//	public static void main(String[] ss) {
+//		Console sss = new Console();
+//		
+//		System.out.println(sss.readOptionMainMenu());
+//	}
 	
 	
 	
