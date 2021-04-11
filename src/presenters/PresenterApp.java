@@ -39,19 +39,8 @@ public class PresenterApp {
 		byte option = console.readOptionMenuCrop();
 		switch(option) {
 			case 1:
-				PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
-				LocalDate startOfCultivation= console.readSeedTime();
-				Double amountOfLand = console.readAmountOfLand();
-				while(farm.itIsBigger(amountOfLand)) {
-					console.printData(console.MESSAGE_FOR_GREATER_EARTH);
-					amountOfLand = console.readAmountOfLand();
-				}
-				double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
-				console.printData(console.showSowingAmount(production));
-				farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
-				console.printData(console.MESSAGE_FOR_SAVED_CROP);
-				managerCrops();
-				break;
+					this.manageAddCrop();
+					break;
 			case 2:
 					console.printData(farm.getCropsInProgress());
 					managerCrops();
@@ -64,6 +53,21 @@ public class PresenterApp {
 				break;
 		}
 		
+	}
+	
+	private void manageAddCrop() {
+		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
+		LocalDate startOfCultivation= console.readSeedTime();
+		Double amountOfLand = console.readAmountOfLand();
+		while(farm.itIsBigger(amountOfLand)) {
+			console.printData(console.MESSAGE_FOR_GREATER_EARTH);
+			amountOfLand = console.readAmountOfLand();
+		}
+		double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
+		console.printData(console.showSowingAmount(production));
+		farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
+		console.printData(console.MESSAGE_FOR_SAVED_CROP);
+		managerCrops();
 	}
 
 	

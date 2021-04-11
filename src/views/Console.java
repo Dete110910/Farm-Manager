@@ -29,9 +29,9 @@ public class Console {
 	public static String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
 	public static String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
 	public static String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
-	public static String MESSAGE_CROPS = "\nCultivos"; 
+	public static String MESSAGE_CROPS = "\n		Cultivos"; 
 	public static String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
-	public static String MESSAGE_CROPS_MENU = "\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás";
+	public static String MESSAGE_CROPS_MENU = "\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás\n";
 	public static String MESSAGE_CHOOSE_TYPE_CROP = "";
 	public static String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = "\nElija el tipo de planta que desea sembrar:\n1. Papa.\n2. Arveja.\n3. Frijol.\n4. Maiz";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
