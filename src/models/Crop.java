@@ -1,7 +1,9 @@
 package models;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Crop {
 	
@@ -9,18 +11,23 @@ public class Crop {
 	private double growthRate;
 	private PlantSpecie specie;
 	private LocalDate seedTime;
+	private LocalDate completionTime;
 	private double ground;
-	private double amountSown; 
+	private double[] amountSown; 
 	private double amountHarvested;
+	private double productionObtained;//Produccion vendida en bultos
+	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
 	
 	
 	
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground, double amountSown) {
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, byte id) {
 		this.specie = specie;
 		this.seedTime = seedTime;
 		this.ground = ground;
 		this.amountSown = amountSown;
+		this.id = id;
+		expenseCrop = new ArrayList<ExpenseCrop>();
 	}
 	
 	public double getGrowthRatePercentage() {
@@ -29,6 +36,20 @@ public class Crop {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
+	 * @return double con el valor 
+	 */
+	public double getFullValueOfExpenses() {
+		double value = 0;
+		if(expenseCrop.size() > 0) {
+			for (int i = 0; i < expenseCrop.size(); i++) {
+				value += expenseCrop.get(i).getPrice();
+			}
+		}
+		return value;
+	} 
 	
 //	private double getGrowthRatePercentageForPotatoes(){
 //		
@@ -41,15 +62,6 @@ public class Crop {
 	public void addExpense(ExpenseTypeCrop expenseTypeCrop, double price) {
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public byte getId() {
 		return id;
@@ -91,11 +103,11 @@ public class Crop {
 		this.ground = ground;
 	}
 
-	public double getAmountSown() {
+	public double[] getAmountSown() {
 		return amountSown;
 	}
 
-	public void setAmountSown(double amountSown) {
+	public void setAmountSown(double[] amountSown) {
 		this.amountSown = amountSown;
 	}
 
@@ -110,17 +122,16 @@ public class Crop {
 	public ArrayList<ExpenseCrop> getExpenseCrop() {
 		return expenseCrop;
 	}
-
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	@Override
+	public String toString() {
+		return ("\nTipo de planta : " + specie.getLabel() + "\n" +
+				"Id : " + id  + "\n" +
+				"Valor total en gastos : " + getFullValueOfExpenses() + "\n" + 
+				"Bultos vendidos : " + productionObtained + "\n" +
+				"Precio al que se vendio por bulto : " + salePriceperpackage + "\n" +
+				"________________________________________" + "\n" +
+				"Total : " + ((productionObtained * salePriceperpackage) - getFullValueOfExpenses()) + "\n");
+	}
 }
 
