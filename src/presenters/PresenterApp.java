@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import models.*;
 import views.Console;
+import exceptions.views.*;
+
 
 public class PresenterApp {
 	
@@ -39,31 +41,47 @@ public class PresenterApp {
 		byte option = console.readOptionMenuCrop();
 		switch(option) {
 			case 1:
-				PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
-				LocalDate startOfCultivation= console.readSeedTime();
-				Double amountOfLand = console.readAmountOfLand();
-				while(farm.itIsBigger(amountOfLand)) {
-					console.printData(console.MESSAGE_FOR_GREATER_EARTH);
-					amountOfLand = console.readAmountOfLand();
-				}
-				double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
-				console.printData(console.showSowingAmount(production));
-				farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
-				console.printData(console.MESSAGE_FOR_SAVED_CROP);
-				managerCrops();
-				break;
+					this.manageAddCrop();
+					break;
 			case 2:
-					console.printData(farm.getCropsInProgress());
-					managerCrops();
-				break;
+					this.manageShowMyCrops();
+					break;
 			case 3:
 				
-				break;
+					break;
 			case 4:
 				
-				break;
+					break;
 		}
 		
+	}
+	
+	private void manageAddCrop() {
+		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
+		LocalDate startOfCultivation = null;
+		try {
+			startOfCultivation = console.readSeedTime();
+		}
+		catch(ExceptionDate exceptionDate){
+			System.out.println(exceptionDate.getMessage());
+			
+		}
+		
+		Double amountOfLand = console.readAmountOfLand();
+		while(farm.itIsBigger(amountOfLand)) {
+			console.printData(console.MESSAGE_FOR_GREATER_EARTH);
+			amountOfLand = console.readAmountOfLand();
+		}
+		double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
+		console.printData(console.showSowingAmount(production));
+		farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
+		console.printData(console.MESSAGE_FOR_SAVED_CROP);
+		managerCrops();
+	}
+	
+	private void manageShowMyCrops() {
+		console.validateLengthOfLists(farm.getCropsInProgress());
+		managerCrops();
 	}
 
 	
