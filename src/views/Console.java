@@ -29,13 +29,19 @@ public class Console {
 	public static String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
 	public static String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
 	public static String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
-	public static String MESSAGE_CROPS = "Cultivos \n"; 
+	public static String MESSAGE_CROPS = "\nCultivos"; 
 	public static String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
-	public static String MESSAGE_CROPS_MENU = "	\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás";
+	public static String MESSAGE_CROPS_MENU = "\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás";
 	public static String MESSAGE_CHOOSE_TYPE_CROP = "";
-	public static String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = "1. Papa.\n2. Arveja.\n3. Frijol.\n4. Maiz";
+	public static String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = "\nElija el tipo de planta que desea sembrar:\n1. Papa.\n2. Arveja.\n3. Frijol.\n4. Maiz";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
 	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
+	public static final String MESSAGE_FOR_PLANTING_LAND = "Ingrese en metros cuadrados la cantidad de terreno que sera sembrada";
+	public static final String MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT = "Gran eleccion de tierra, la cantidad de semilla optima para esta siembra es de : ";
+	public static final String MESSAGE_IF_THEY_ARE_POUNDS = " libras.";
+	public static final String MESSAGE_IF_THEY_ARE_ARROBAS = " arrobas.";
+	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
+	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guarado con exito!!!";
 
 
 	
@@ -46,10 +52,14 @@ public class Console {
 		scanner = new Scanner(System.in);
 	}
 	
-	
-	public void print(String string) {
-		System.out.println(string);
-	}
+	/**
+	 * Metodo para imprimir
+	 * @param <E>
+	 * @param input : Objeto a mostrar
+	 */
+	 public < E > void printData( E input) {
+		 System.out.println(input);
+	 }
 	
 	/**
 	 * Método para elegir la opción deseada en el menú principal
@@ -74,9 +84,9 @@ public class Console {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_CROPS_MENU);
 		String option = scanner.nextLine();
-		if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 5) {
+		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 5) {
 			System.out.println(ERROR_INVALID_OPTION);
-			return readOptionMenuCrop();
+			option = scanner.nextLine();
 		}
 		return Byte.parseByte(option);
 		
@@ -228,7 +238,7 @@ public class Console {
 	}
 	
 	public byte readPlantTypeOption() {
-		System.out.println(ERROR_INVALID_OPTION);
+		System.out.println(MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT);
 		String option = scanner.nextLine();
 		while(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 4) {
 			System.out.println("Ponga el error");
@@ -247,11 +257,30 @@ public class Console {
 		return LocalDate.parse( seedTime, dateTimeFormatter );
 	}
 	
-//	public static void main(String[] ss) {
-//		Console sss = new Console();
-//		
-//		System.out.println(sss.readOptionMainMenu());
-//	}
+	/**
+	 * Metodo para obtener la cantidad de tierra que suara para el cultivo
+	 * @return cantidad de tierra en metros cuadrados
+	 */
+	public double readAmountOfLand() {
+		System.out.println(MESSAGE_FOR_PLANTING_LAND);
+		String ground = scanner.nextLine();
+		while(!isNumeric(ground)) {
+			System.out.println(ERROR_INVALIDATE_VALUE);
+			ground = scanner.nextLine();
+		}
+		return Double.parseDouble(ground);
+	}
+	
+	public String showSowingAmount(double[] production) {
+		String result = MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT;
+		if(production[0] == 1) {
+			result += (String.valueOf(production[1]) + MESSAGE_IF_THEY_ARE_ARROBAS);
+		}else {
+			result += (String.valueOf(production[1]) + MESSAGE_IF_THEY_ARE_POUNDS);
+		}
+		return result;
+	}
+
 	
 	
 	

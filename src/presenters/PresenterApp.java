@@ -20,7 +20,7 @@ public class PresenterApp {
 	}
 	
 	private void runApp() {
-		console.print(console.MESSAGE_FOR_SHOW_HEADER + farm.getName());
+		console.printData(console.MESSAGE_FOR_SHOW_HEADER + farm.getName());
 		byte option = console.readOptionMainMenu();		
 		switch(option) {
 		
@@ -35,16 +35,43 @@ public class PresenterApp {
 	}
 	
 	private void managerCrops() {
-		console.print(console.MESSAGE_CROPS);
+		console.printData(console.MESSAGE_CROPS);
 		byte option = console.readOptionMenuCrop();
 		switch(option) {
-					case 1:
-							this.farm.addCropType(this.getTypePlant(console.readPlantTypeOption()), LocalDate.of(2020, 5, 1), 2000, 20);;
-							break;
+			case 1:
+				PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
+				LocalDate startOfCultivation= console.readSeedTime();
+				Double amountOfLand = console.readAmountOfLand();
+				while(farm.itIsBigger(amountOfLand)) {
+					console.printData(console.MESSAGE_FOR_GREATER_EARTH);
+					amountOfLand = console.readAmountOfLand();
+				}
+				double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
+				console.printData(console.showSowingAmount(production));
+				farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
+				console.printData(console.MESSAGE_FOR_SAVED_CROP);
+				managerCrops();
+				break;
+			case 2:
+					console.printData(farm.getCropsInProgress());
+					managerCrops();
+				break;
+			case 3:
+				
+				break;
+			case 4:
+				
+				break;
 		}
 		
 	}
+
 	
+	/**
+	 * Metodo para determinar el tipo de plata del que sera el cultivo
+	 * @param option, byte obtenido de la vista
+	 * @return objeto de tipo PlantSpecie
+	 */
 	private PlantSpecie getTypePlant(byte option) {
 		PlantSpecie plantSpecieAux = null;
 		switch(option) {
