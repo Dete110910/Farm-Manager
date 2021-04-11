@@ -3,6 +3,9 @@ package views;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
+import java.util.ArrayList;
+import exceptions.views.*;
+
 
 import java.util.Scanner;
 
@@ -14,26 +17,26 @@ import java.util.Scanner;
 public class Console {
 	
 	private Scanner scanner;
-	public static String MESSAGE_NAME_OF_FARM = "				Bienvenido al Software DARXS\nPara empezar por favor ingrese el nombre de su finca :";
-	public static String ERROR_NAME = "\nEl nombre contiene menos de 4 caracteres, por favor intente nuevamente";
-	public static String MESSAGE_READ_GROUND_ANIMALS = "Ingrese en metros cuadrados el terreno que sera designado al cuidado de animales";
-	public static String ERROR_INVALIDATE_VALUE = "El valor ingresado no es correcto, intente nuevamente";
-	public static String MESSAGE_METRIC_ERROR = "El terreno no es óptimo";
-	public static String MESSAGE_INSUFICIENT_GROUND = "El terreno no concuerda con los valores dados anteriormente";
-	public static String MESSAGE_READ_GROUND_CROPS = "Ingrese en metros cuadrados el terreno que sera designado para siembra de cultivos";
-	public static String MESSAGE_READ_INITIAL_MONEY = "Ingrese la cantidad de dinero en COP con el que se iniciara la finca";
-	public static String MESSAGE_READ_USERNAME = "Ingrese un nombre de usuario";
-	public static String MESSAGE_READ_PASSWORD = "Ingrese una contraseña, antes de todo asegurese de que tenga:\n-Minimo 8 caracteres.\n-Una mayuscula.\n-Un numero";
-	public static String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
-	public static byte 	 MINIMUM_LAND = 50;
-	public static String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
-	public static String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
-	public static String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
-	public static String MESSAGE_CROPS = "\n		Cultivos"; 
-	public static String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
-	public static String MESSAGE_CROPS_MENU = "\n1.Añadir cultivo.	\n2.Mis cultivos.	\n3.Registrar cultivo.	\n4.R2.	\n0.Volver atrás\n";
-	public static String MESSAGE_CHOOSE_TYPE_CROP = "";
-	public static String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = "\nElija el tipo de planta que desea sembrar:\n1. Papa.\n2. Arveja.\n3. Frijol.\n4. Maiz";
+	public static final String MESSAGE_NAME_OF_FARM = "				Bienvenido al Software DARXS\nPara empezar por favor ingrese el nombre de su finca :";
+	public static final String ERROR_NAME = "\nEl nombre contiene menos de 4 caracteres, por favor intente nuevamente";
+	public static final String MESSAGE_READ_GROUND_ANIMALS = "Ingrese en metros cuadrados el terreno que sera designado al cuidado de animales";
+	public static final String ERROR_INVALIDATE_VALUE = "El valor ingresado no es correcto, intente nuevamente";
+	public static final String MESSAGE_METRIC_ERROR = "El terreno no es óptimo";
+	public static final String MESSAGE_INSUFICIENT_GROUND = "El terreno no concuerda con los valores dados anteriormente";
+	public static final String MESSAGE_READ_GROUND_CROPS = "Ingrese en metros cuadrados el terreno que sera designado para siembra de cultivos";
+	public static final String MESSAGE_READ_INITIAL_MONEY = "Ingrese la cantidad de dinero en COP con el que se iniciara la finca";
+	public static final String MESSAGE_READ_USERNAME = "Ingrese un nombre de usuario";
+	public static final String MESSAGE_READ_PASSWORD = "Ingrese una contraseña, antes de todo asegurese de que tenga:\n-Minimo 8 caracteres.\n-Una mayuscula.\n-Un numero";
+	public static final String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
+	public static final byte 	 MINIMUM_LAND = 50;
+	public static final String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
+	public static final String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
+	public static final String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
+	public static final String MESSAGE_CROPS = "\n		Cultivos"; 
+	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
+	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Registrar cultivo.	\n 4.R2.	\n 0.Volver atrás\n";
+	public static final String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = " Elija el tipo de planta que desea sembrar:	\n  1. Papa.	\n  2. Arveja.	\n  3. Frijol.	\n  4. Maiz";
+	public static final String VALIDATOR_OF_DATE = "\\d{1,2}/\\d{1,2}/\\d{4}";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
 	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
 	public static final String MESSAGE_FOR_PLANTING_LAND = "Ingrese en metros cuadrados la cantidad de terreno que sera sembrada";
@@ -42,6 +45,10 @@ public class Console {
 	public static final String MESSAGE_IF_THEY_ARE_ARROBAS = " arrobas.";
 	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
 	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guarado con exito!!!";
+	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
+//	public static final String 
+//	public static final String 
+//	public static final String 
 
 
 	
@@ -59,6 +66,14 @@ public class Console {
 	 */
 	 public < E > void printData( E input) {
 		 System.out.println(input);
+	 }
+	 
+	 public < E > void validateLengthOfLists(ArrayList<E> input) {
+		 if (input.size() <= 0) {
+			 System.out.println(MESSAGE_FOR_VOID_LIST);
+		 }
+		 else
+			 this.printData(input);
 	 }
 	
 	/**
@@ -247,14 +262,22 @@ public class Console {
 		return Byte.parseByte(option);
 	}
 	
-	public LocalDate readSeedTime(){
+	public LocalDate readSeedTime() throws ExceptionDate{
 		System.out.println(MESSAGE_FOR_ENTRY_SEED_DATE);
 		return this.validateSeedTime(scanner.nextLine());
 	}
 	
-	public LocalDate validateSeedTime(String seedTime){
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern( FORMAT_OF_DATE );
-		return LocalDate.parse( seedTime, dateTimeFormatter );
+	public LocalDate validateSeedTime(String seedTime) throws ExceptionDate{
+		if(seedTime.matches( VALIDATOR_OF_DATE )) {
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMAT_OF_DATE);
+			return LocalDate.parse( seedTime, dateTimeFormatter );
+		}
+		else {
+			this.readSeedTime();
+			throw new ExceptionDate();
+			
+		}
+		
 	}
 	
 	/**

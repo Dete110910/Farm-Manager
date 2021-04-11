@@ -28,7 +28,7 @@ public class Farm {
 		finishedCrops = new ArrayList<Crop>();
 		
 	}
-	//el byte es el id? y el localDate es la fecha de creación? los double qué son? el tamaño y el valor?
+	
 	public void addCropType(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown) {
 		currentCrops++;
 		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, currentCrops));
@@ -76,6 +76,9 @@ public class Farm {
 		}
 		return true;
 	}
+	
+	
+	
 	
 	public String deleteCrop() {
 		return "Falta por implementar";
