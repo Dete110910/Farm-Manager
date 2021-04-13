@@ -28,13 +28,13 @@ public class Console {
 	public static final String MESSAGE_READ_USERNAME = "Ingrese un nombre de usuario";
 	public static final String MESSAGE_READ_PASSWORD = "Ingrese una contraseña, antes de todo asegurese de que tenga:\n-Minimo 8 caracteres.\n-Una mayuscula.\n-Un numero";
 	public static final String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
-	public static final byte 	 MINIMUM_LAND = 50;
+	public static final byte   MINIMUM_LAND = 50;
 	public static final String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
 	public static final String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
 	public static final String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
 	public static final String MESSAGE_CROPS = "\n		Cultivos"; 
-	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada \n";
-	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Registrar cultivo.	\n 4.R2.	\n 0.Volver atrás\n";
+	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada. Por favor, intentelo nuevamente. \n";
+	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Mostrar número de cultivos en progreso por especie.	\n 4.R2.	\n 0.Volver atrás\n";
 	public static final String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = " Elija el tipo de planta que desea sembrar:	\n  1. Papa.	\n  2. Arveja.	\n  3. Frijol.	\n  4. Maiz";
 	public static final String VALIDATOR_OF_DATE = "\\d{1,2}/\\d{1,2}/\\d{4}";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
@@ -46,6 +46,15 @@ public class Console {
 	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
 	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guarado con exito!!!";
 	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
+	public static final String MESSAGE_FOR_SHOW_NUMBER_CROPS_BY_SPECIE = "Mostrar el número de cultivos por especie.";
+	public static final String MESSAGE_FOR_WAY_TO_ADD_CROP = "\n   1.Añadir un cultivo en curso.	\n   2.Añadir un cultivo finalizado. \n   0.Volver atrás"; 
+	public static final String MESSAGE_FOR_READ_VALUE_EXPENSE_CROP = "\nPor favor, ingrese sus gastos totales para este cultivo";
+	public static final String MESSAGE_FOR_READ_VALUE_OF_PRUDCTION_OBTAINED = "Por favor, ingrese la cantidad cosechada en bultos"; 
+	public static final String MESSAGE_FOR_READ_PRICE_PER_PACKAGE = "Por favor, ingrese el precio al que vendió cada bulto de la mercancía"; 
+	public static final String MESSAGE_FOR_CHOOSE_TYPE_CROP = "Por favor, elija qué tipo de cultivos desea visualizar\n \n   1.Cultivos en crecimiento. \n   2.Cultivos terminados. \n   0.Volver atrás.";
+	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "[Papa:  %d]%n[Arveja: %d]%n[Frijol: %d]%n[Maíz: %d]%n";
+	public static final String HEADER_CROPS_BY_SPECIE = "		---Cultivos por espeice---			"; 
+	public static final String HEADER_TABLE = "________________________\n|\n|1$-10s\n|\n";
 //	public static final String 
 //	public static final String 
 //	public static final String 
@@ -74,6 +83,10 @@ public class Console {
 		 }
 		 else
 			 this.printData(input);
+	 }
+	 
+	 public void showInvalidOptionMenu() {
+		 System.out.println(ERROR_INVALID_OPTION);
 	 }
 	
 	/**
@@ -273,7 +286,6 @@ public class Console {
 			return LocalDate.parse( seedTime, dateTimeFormatter );
 		}
 		else {
-			this.readSeedTime();
 			throw new ExceptionDate();
 			
 		}
@@ -294,6 +306,8 @@ public class Console {
 		return Double.parseDouble(ground);
 	}
 	
+
+	
 	public String showSowingAmount(double[] production) {
 		String result = MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT;
 		if(production[0] == 1) {
@@ -303,7 +317,81 @@ public class Console {
 		}
 		return result;
 	}
+	
 
+	//arreglar
+	public void showNumberOfCropsBySpecieInProgress(int[] cropsInProgress) {
+		System.out.println(HEADER_CROPS_BY_SPECIE);
+		System.out.printf(HEADER_TABLE, "Tipo");
+		System.out.printf(MESSAGE_NUMBER_CROPS_BY_SPECIE, cropsInProgress[0], cropsInProgress[1], cropsInProgress[2], cropsInProgress[3]);
+
+	}
+	
+	
+	public byte readOptionForWayToAdd() {
+		System.out.println(MESSAGE_FOR_WAY_TO_ADD_CROP);
+		String option = scanner.nextLine();
+		while(!isNumeric(option) ||  Byte.parseByte(option) < 0 || Byte.parseByte(option) > 2) {
+			System.out.println(ERROR_INVALID_OPTION);
+			option = scanner.nextLine();
+		}
+		
+		return Byte.parseByte(option);
+	}
+	
+	public double readValueOfExpense() {
+		System.out.println(MESSAGE_FOR_READ_VALUE_EXPENSE_CROP);
+		String expense = scanner.nextLine();
+		while(!isNumeric(expense)) {
+			System.out.println(ERROR_INVALIDATE_VALUE);
+			expense = scanner.nextLine();
+		}
+		
+		return Double.parseDouble(expense);
+	}
+	
+	public int readProductionObtained() {
+		System.out.println(MESSAGE_FOR_READ_VALUE_OF_PRUDCTION_OBTAINED);
+		String productionObtained = scanner.nextLine();
+		while(!isNumeric(productionObtained)) {
+			System.out.println(ERROR_INVALIDATE_VALUE);
+			productionObtained = scanner.nextLine();
+		}
+		
+		return Integer.parseInt(productionObtained);
+	}
+	
+	public double readSalePricePerPackage() {
+		System.out.println(MESSAGE_FOR_READ_PRICE_PER_PACKAGE);
+		String price = scanner.nextLine();
+		while(!isNumeric(price)) {
+			System.out.println(ERROR_INVALIDATE_VALUE);
+			price = scanner.nextLine();
+		}
+		
+		return Double.parseDouble(price);
+	}
+	
+	
+	
+	public byte readTypeOfCrop() {
+		System.out.println(MESSAGE_FOR_CHOOSE_TYPE_CROP);
+		String typeCrop = scanner.nextLine();
+		while(!isNumeric(typeCrop) || Byte.parseByte(typeCrop) < 0 || Byte.parseByte(typeCrop) > 2) {
+			System.out.println(ERROR_INVALID_OPTION);
+			typeCrop = scanner.nextLine();
+		}
+		
+		return Byte.parseByte(typeCrop);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

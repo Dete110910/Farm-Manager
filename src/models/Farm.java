@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Farm {
 	
@@ -29,9 +30,13 @@ public class Farm {
 		
 	}
 	
-	public void addCropType(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown) {
+	public void addCropTypeInProgress(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown) {
 		currentCrops++;
 		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, currentCrops));
+	}
+	
+	public void addCropTypeFinished(PlantSpecie specie, LocalDate seedTime, double ground, double[] amountSown, double expenseCrop, int productionObtained, double salesPricePerPackage){
+		finishedCrops.add(new Crop(specie, seedTime, ground, amountSown, expenseCrop, productionObtained, salesPricePerPackage));
 	}
 	
 	/**
@@ -84,7 +89,35 @@ public class Farm {
 		return "Falta por implementar";
 	}
 	
+	public int[] getNumberOfCropsByPlantSpecieInProgress() {
+		int[] cropsInProgressAux = new int[4];
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
+				cropsInProgressAux[0]++;
+			}
+			
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
+				cropsInProgressAux[1]++;
+			}
+			
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
+				cropsInProgressAux[2]++;
+			}
+			
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.CORN)) {
+				cropsInProgressAux[3]++;
+			}
+		}
+		return cropsInProgressAux;
+		
+	}
 	
+	/**
+	 * Metodo para obtener la cantidad de dias entrte la fecha actual y la fecha en la que se sembro el cultivo
+	 * @param fechaFinal
+	 * @return
+	 */
+
 	
 	
 	
@@ -119,6 +152,12 @@ public class Farm {
 	}
 	public void setCropsInProgress(ArrayList<Crop> crop) {
 		this.cropsInProgress = crop;
+	}
+	public ArrayList<Crop> getFinishedCrops(){
+		return finishedCrops;
+	}
+	public void setFinishedCrops(ArrayList<Crop> crop) {
+		this.finishedCrops = crop;
 	}
 	public double getTotalGround() {
 		return totalGround;

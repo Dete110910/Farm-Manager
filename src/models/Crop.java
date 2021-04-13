@@ -1,11 +1,15 @@
 package models;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Crop {
+	
+	public static final int HUNDRED_PERCENT = 100;
 	
 	private byte id;
 	private double growthRate;
@@ -15,9 +19,11 @@ public class Crop {
 	private double ground;
 	private double[] amountSown; 
 	private double amountHarvested;
-	private double productionObtained;//Produccion vendida en bultos
+	private int productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
+	private double totalValueOfExpense;
+	private double expenseCropFinished;
 	
 	
 	
@@ -28,6 +34,27 @@ public class Crop {
 		this.amountSown = amountSown;
 		this.id = id;
 		expenseCrop = new ArrayList<ExpenseCrop>();
+	}
+	
+	/**
+	 * Metodo constructor para cultivos finalizados
+	 * @param specie
+	 * @param seedTime
+	 * @param ground
+	 * @param amountSown
+	 * @param id
+	 * @param expenseCrop
+	 * @param productionObtained
+	 * @param salePricePerPackage
+	 */
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double expenseCropFinished, int productionObtained, double salePricePerPackage) {
+		this.specie = specie;
+		this.seedTime = seedTime;
+		this.ground = ground;
+		this.amountSown = amountSown;
+		this.expenseCropFinished = expenseCropFinished;
+		this.productionObtained = productionObtained;
+		this.salePriceperpackage = salePricePerPackage;
 	}
 	
 	public double getGrowthRatePercentage() {
@@ -41,19 +68,27 @@ public class Crop {
 	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
 	 * @return double con el valor 
 	 */
-	public double getFullValueOfExpenses() {
-		double value = 0;
+	public void getFullValueOfExpenses() {
 		if(expenseCrop.size() > 0) {
 			for (int i = 0; i < expenseCrop.size(); i++) {
-				value += expenseCrop.get(i).getPrice();
+				totalValueOfExpense += expenseCrop.get(i).getPrice();
 			}
 		}
-		return value;
 	} 
 	
-//	private double getGrowthRatePercentageForPotatoes(){
-//		
-//	}
+	public int getDaysBetweenTwoDates(LocalDate fechaFinal) {
+		return (int) DAYS.between(seedTime, fechaFinal);
+	}
+	
+	/**
+	 * Metodo para obtener el procentaje de crecimiento de un cultivo
+	 * @return porcentaje
+	 */
+	private double getGrowthPercentage(){
+		int timeUntilToday = getDaysBetweenTwoDates(LocalDate.now());
+		return (double)(timeUntilToday*HUNDRED_PERCENT/specie.getMaximunDuration());
+	}
+	
 	
 	
 	 
@@ -130,11 +165,11 @@ public class Crop {
 	public String toString() {
 		return ("\nTipo de planta : " + specie.getLabel() + "\n" +
 				"Id : " + id  + "\n" +
-				"Valor total en gastos : " + getFullValueOfExpenses() + "\n" + 
+				"Valor total en gastos : " + totalValueOfExpense + "\n" + 
 				"Bultos vendidos : " + productionObtained + "\n" +
 				"Precio al que se vendio por bulto : " + salePriceperpackage + "\n" +
 				"________________________________________" + "\n" +
-				"Total : " + ((productionObtained * salePriceperpackage) - getFullValueOfExpenses()) + "\n");
+				"Total : " + ((productionObtained * salePriceperpackage) - totalValueOfExpense) + "\n");
 	}
 }
 
