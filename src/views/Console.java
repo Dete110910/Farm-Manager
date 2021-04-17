@@ -52,9 +52,20 @@ public class Console {
 	public static final String MESSAGE_FOR_READ_VALUE_OF_PRUDCTION_OBTAINED = "Por favor, ingrese la cantidad cosechada en bultos"; 
 	public static final String MESSAGE_FOR_READ_PRICE_PER_PACKAGE = "Por favor, ingrese el precio al que vendió cada bulto de la mercancía"; 
 	public static final String MESSAGE_FOR_CHOOSE_TYPE_CROP = "Por favor, elija qué tipo de cultivos desea visualizar\n \n   1.Cultivos en crecimiento. \n   2.Cultivos terminados. \n   0.Volver atrás.";
-	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "[Papa:  %d]%n[Arveja: %d]%n[Frijol: %d]%n[Maíz: %d]%n";
-	public static final String HEADER_CROPS_BY_SPECIE = "		---Cultivos por espeice---			"; 
-	public static final String HEADER_TABLE = "________________________\n|\n|1$-10s\n|\n";
+	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "";
+	public static final String HEADER_CROPS_BY_SPECIE = "	   ---Cultivos por espeice---			"; 
+	public static final String HEADER_TABLE = " _______________________________________________\n|\t\t\t|\t\t\t|\n|\t%s\t\t|\t%s\t|\n|_______________________|_______________________|\n";
+	public static final String POTATO = "Papa"; 
+	public static final String VETCH = "Arveja";
+	public static final String BEANS = "Frijol";
+	public static final String CORN = "Maíz";
+	public static final Object[] HEADERS_PRODUCTS = {POTATO, VETCH, BEANS, CORN};
+	public static final String SEPARATOR_TABLE_LINE = "|";
+	public static final String FORMAT = "%1$-1s\t%2$-15s %3$-10s %4$-12s %5$-1s\n";
+	public static final String FORMAT_PART_OF_TABLE = "%1$-26s %2$-10s\n";
+	public static final String TYPE = "Tipo"; 
+	public static final String AMOUNT = "Cantidad";
+	public static final String FINAL_LINE = "|_______________________|_______________________|";
 //	public static final String 
 //	public static final String 
 //	public static final String 
@@ -85,6 +96,14 @@ public class Console {
 			 this.printData(input);
 	 }
 	 
+	 public void printInTableFormat(int[] cropsInProgress) {
+		 System.out.println(HEADER_CROPS_BY_SPECIE);
+		 System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
+		 for(int i = 0; i < cropsInProgress.length; i++) {
+			 System.out.println(String.format(FORMAT,SEPARATOR_TABLE_LINE, HEADERS_PRODUCTS[i],SEPARATOR_TABLE_LINE, cropsInProgress[i], SEPARATOR_TABLE_LINE));
+		 }
+		 System.out.println(FINAL_LINE);
+	 }
 	 public void showInvalidOptionMenu() {
 		 System.out.println(ERROR_INVALID_OPTION);
 	 }
@@ -319,10 +338,10 @@ public class Console {
 	}
 	
 
-	//arreglar
+	//MÉTODO QUIZÁ INUTILIZADO PARA DESPUÉS
 	public void showNumberOfCropsBySpecieInProgress(int[] cropsInProgress) {
 		System.out.println(HEADER_CROPS_BY_SPECIE);
-		System.out.printf(HEADER_TABLE, "Tipo");
+		System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
 		System.out.printf(MESSAGE_NUMBER_CROPS_BY_SPECIE, cropsInProgress[0], cropsInProgress[1], cropsInProgress[2], cropsInProgress[3]);
 
 	}

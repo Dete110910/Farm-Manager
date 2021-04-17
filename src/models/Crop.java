@@ -10,6 +10,14 @@ import java.util.Iterator;
 public class Crop {
 	
 	public static final int HUNDRED_PERCENT = 100;
+	public static final String TYPE_PLANT = "\nTipo de planta : ";
+	public static final String ID = "Id : ";
+	public static final String SPACE = "\n";
+	public static final String TOTAL_VALUE_EXPENSES = "Valor total en gastos : ";
+	public static final String SOLD_PACKAGE = "Bultos vendidos : ";
+	public static final String PRICE_PER_PACKAGE = "Precio al que se vendio por bulto : ";
+	public static final String SEPARATOR_LINE = "________________________________________";
+	public static final String TOTAL= "Total : ";
 	
 	private byte id;
 	private double growthRate;
@@ -163,13 +171,13 @@ public class Crop {
 	
 	@Override
 	public String toString() {
-		return ("\nTipo de planta : " + specie.getLabel() + "\n" +
-				"Id : " + id  + "\n" +
-				"Valor total en gastos : " + totalValueOfExpense + "\n" + 
-				"Bultos vendidos : " + productionObtained + "\n" +
-				"Precio al que se vendio por bulto : " + salePriceperpackage + "\n" +
-				"________________________________________" + "\n" +
-				"Total : " + ((productionObtained * salePriceperpackage) - totalValueOfExpense) + "\n");
+		return (TYPE_PLANT + specie.getLabel() + SPACE +
+				ID + id  + SPACE +
+				TOTAL_VALUE_EXPENSES + totalValueOfExpense + SPACE + 
+				SOLD_PACKAGE + productionObtained + SPACE +
+				PRICE_PER_PACKAGE + salePriceperpackage + SPACE +
+				SEPARATOR_LINE + SPACE +
+				TOTAL + ((productionObtained * salePriceperpackage) - totalValueOfExpense) + "\n");
 	}
 }
 

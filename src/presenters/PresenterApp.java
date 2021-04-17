@@ -188,7 +188,7 @@ public class PresenterApp {
 	}
 	
 	private void manageNumberOfCropsBySpecieInProgress() {
-		console.showNumberOfCropsBySpecieInProgress(farm.getNumberOfCropsByPlantSpecieInProgress());
+		console.printInTableFormat(farm.getNumberOfCropsByPlantSpecieInProgress());
 		managerCrops();
 	}
 
