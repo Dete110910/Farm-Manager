@@ -2,7 +2,7 @@ package models;
 
 public enum PlantSpecie {
 	
-	POTATO("Papa", 6, 0.06), VETCH("Arveja", 4, 0.0015), BEANS("Frijol",4, 0.0015), CORN("Maíz", 9, 0.002);
+	POTATO("Papa", 180, 0.06), VETCH("Arveja", 120, 0.0015), BEANS("Frijol", 120, 0.0015), CORN("Maíz", 270, 0.002);
 	
 	private String label;
 	private int maximunDuration;

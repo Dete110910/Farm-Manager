@@ -3,7 +3,7 @@ package presenters;
 import java.time.LocalDate;
 
 import models.*;
-import views.Console;
+import views.*;
 import exceptions.views.*;
 
 
@@ -47,41 +47,121 @@ public class PresenterApp {
 					this.manageShowMyCrops();
 					break;
 			case 3:
-				
+					this.manageNumberOfCropsBySpecieInProgress();
 					break;
 			case 4:
-				
+					this.manageNumberOfCropsBySpecieFinished();
 					break;
+			case 5: 
+					this.managePercentageOfGrowthRateBySpecie();
+					break;
+					
+			case 6: this.manageGroundBySpecie();
+					break;
+			
+			case 0:
+					this.runApp();
+					break;
+				
 		}
 		
 	}
 	
 	private void manageAddCrop() {
-		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
+		byte option = console.readOptionForWayToAdd();
+		switch(option) {
+				case 1: 
+					this.manageAddCropsInCourse();
+					break;
+					
+				case 2:
+					this.manageAddCropsFinished();
+					break;
+				
+				case 0:
+					this.managerCrops();
+					break;
+				
+				
+		}
+		
+	}
+	
+	private void manageAddCropsInCourse() {
 		LocalDate startOfCultivation = null;
 		try {
 			startOfCultivation = console.readSeedTime();
 		}
 		catch(ExceptionDate exceptionDate){
 			System.out.println(exceptionDate.getMessage());
+			manageAddCrop();
 			
 		}
-		
-		Double amountOfLand = console.readAmountOfLand();
+		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
+		double amountOfLand = console.readAmountOfLand();
 		while(farm.itIsBigger(amountOfLand)) {
 			console.printData(console.MESSAGE_FOR_GREATER_EARTH);
 			amountOfLand = console.readAmountOfLand();
 		}
+		farm.setGroundAvailableOfCrops(farm.getGroundAvailableOfCrops() - amountOfLand);
 		double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
 		console.printData(console.showSowingAmount(production));
-		farm.addCropType(planSpecie, startOfCultivation, amountOfLand, production);
+		farm.addCropTypeInProgress(planSpecie, startOfCultivation, amountOfLand, production);
 		console.printData(console.MESSAGE_FOR_SAVED_CROP);
 		managerCrops();
 	}
 	
-	private void manageShowMyCrops() {
-		console.validateLengthOfLists(farm.getCropsInProgress());
+	private void manageAddCropsFinished() {
+		LocalDate startOfCultivation = null;
+		try {
+			startOfCultivation = console.readSeedTime();
+		}
+		catch (ExceptionDate exceptionDate) {
+			System.out.println(exceptionDate.getMessage());
+		}
+		
+		PlantSpecie plantSpecie = getTypePlant(console.readPlantTypeOption());
+		double amountOfLand = console.readAmountOfLand();
+		while(farm.itIsBigger(amountOfLand)) {
+			System.out.println(console.MESSAGE_FOR_GREATER_EARTH);
+			amountOfLand = console.readAmountOfLand();
+		}
+		double[] production = farm.calculateEstimatedProduction(plantSpecie, amountOfLand);
+		console.printData(console.showSowingAmount(production));
+		double expenseCrop = console.readValueOfExpense();
+		int productionObatined = console.readProductionObtained();
+		double salesPricePerPackage = console.readSalePricePerPackage();
+		farm.addCropTypeFinished(plantSpecie, startOfCultivation, amountOfLand, production, expenseCrop, productionObatined, salesPricePerPackage);
 		managerCrops();
+
+		
+	}
+	private void manageShowMyCrops() {
+		byte option = console.readTypeOfCrop();
+		switch(option) {
+					
+				case 1:
+						this.manageCropsInProgress();
+						break;
+						
+				case 2:
+						this.manageFinishedCrops();
+					
+				case 0:
+						this.managerCrops();
+						break;
+						
+		}
+	}
+	
+	private void manageCropsInProgress() {
+		console.validateLengthOfLists(farm.getCropsInProgress());
+		manageShowMyCrops();
+	}
+	
+	private void manageFinishedCrops() {
+		console.validateLengthOfLists(farm.getFinishedCrops());
+		manageShowMyCrops();
 	}
 
 	
@@ -114,6 +194,26 @@ public class PresenterApp {
 		return plantSpecieAux;
 	}
 	
+	private void manageNumberOfCropsBySpecieInProgress() {
+		console.printCropsBySpecieInProgressAsTable(farm.getNumberOfCropsByPlantSpecieInProgress());
+		managerCrops();
+	}
+	
+	private void manageNumberOfCropsBySpecieFinished() {
+		console.printCropsBySpecieInProgressAsTable(farm.getNumberOfCropsByPlantSpecieFinished());
+		managerCrops();
+	}
+	
+	private void managePercentageOfGrowthRateBySpecie() {
+		new PrintHashMap(farm.getPercentageGrowthRateByPlantSpecie(this.getTypePlant(console.readPlantTypeOption())));
+		managerCrops();
+	}
+	
+	private void manageGroundBySpecie() {
+		new PrintHashMap(farm.getPercetageOfLandOcuppiedBySpecie());
+		managerCrops();
+
+	}
 
 	
 	private void managerOfBovine() {

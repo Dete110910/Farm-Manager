@@ -1,5 +1,7 @@
 package models;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,17 +9,27 @@ import java.util.Iterator;
 
 public class Crop {
 	
+	public static final int HUNDRED_PERCENT = 100;
+	public static final String TYPE_PLANT = "\nTipo de planta : ";
+	public static final String ID = "Id : ";
+	public static final String SPACE = "\n";
+	public static final String TOTAL_VALUE_EXPENSES = "Valor total en gastos : ";
+	public static final String SOLD_PACKAGE = "Bultos vendidos : ";
+	public static final String PRICE_PER_PACKAGE = "Precio al que se vendio por bulto : ";
+	public static final String SEPARATOR_LINE = "________________________________________";
+	public static final String TOTAL= "Total : ";
+	
 	private byte id;
-	private double growthRate;
 	private PlantSpecie specie;
 	private LocalDate seedTime;
-	private LocalDate completionTime;
 	private double ground;
 	private double[] amountSown; 
 	private double amountHarvested;
-	private double productionObtained;//Produccion vendida en bultos
+	private int productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
+	private double totalValueOfExpense;
+	private double expenseCropFinished;
 	
 	
 	
@@ -30,30 +42,54 @@ public class Crop {
 		expenseCrop = new ArrayList<ExpenseCrop>();
 	}
 	
-	public double getGrowthRatePercentage() {
-		if(specie.getLabel().equals(PlantSpecie.POTATO.getLabel())) {
-			return 0;
-		}
-		return 0;
+	/**
+	 * Metodo constructor para cultivos finalizados
+	 * @param specie
+	 * @param seedTime
+	 * @param ground
+	 * @param amountSown
+	 * @param id
+	 * @param expenseCrop
+	 * @param productionObtained
+	 * @param salePricePerPackage
+	 */
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double expenseCropFinished, int productionObtained, double salePricePerPackage) {
+		this.specie = specie;
+		this.seedTime = seedTime;
+		this.ground = ground;
+		this.amountSown = amountSown;
+		this.expenseCropFinished = expenseCropFinished;
+		this.productionObtained = productionObtained;
+		this.salePriceperpackage = salePricePerPackage;
 	}
+	
+
 	
 	/**
 	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
 	 * @return double con el valor 
 	 */
-	public double getFullValueOfExpenses() {
-		double value = 0;
+	public void getFullValueOfExpenses() {
 		if(expenseCrop.size() > 0) {
 			for (int i = 0; i < expenseCrop.size(); i++) {
-				value += expenseCrop.get(i).getPrice();
+				totalValueOfExpense += expenseCrop.get(i).getPrice();
 			}
 		}
-		return value;
 	} 
 	
-//	private double getGrowthRatePercentageForPotatoes(){
-//		
-//	}
+	public int getDaysBetweenTwoDates() {
+		return (int) DAYS.between(seedTime, LocalDate.now());
+	}
+	
+	/**
+	 * Metodo para obtener el procentaje de crecimiento de un cultivo
+	 * @return porcentaje
+	 */
+	public double getGrowthPercentage(){
+		int timeUntilToday = getDaysBetweenTwoDates();
+		return (double)(timeUntilToday*HUNDRED_PERCENT/specie.getMaximunDuration());
+	}
+	
 	
 	
 	 
@@ -74,13 +110,7 @@ public class Crop {
 		this.id = id;
 	}
 
-	public double getGrowthRate() {
-		return growthRate;
-	}
 
-	public void setGrowthRate(double growthRate) {
-		this.growthRate = growthRate;
-	}
 
 	public PlantSpecie getSpecie() {
 		return specie;
@@ -128,13 +158,13 @@ public class Crop {
 	
 	@Override
 	public String toString() {
-		return ("\nTipo de planta : " + specie.getLabel() + "\n" +
-				"Id : " + id  + "\n" +
-				"Valor total en gastos : " + getFullValueOfExpenses() + "\n" + 
-				"Bultos vendidos : " + productionObtained + "\n" +
-				"Precio al que se vendio por bulto : " + salePriceperpackage + "\n" +
-				"________________________________________" + "\n" +
-				"Total : " + ((productionObtained * salePriceperpackage) - getFullValueOfExpenses()) + "\n");
+		return (TYPE_PLANT + specie.getLabel() + SPACE +
+				ID + id  + SPACE +
+				TOTAL_VALUE_EXPENSES + totalValueOfExpense + SPACE + 
+				SOLD_PACKAGE + productionObtained + SPACE +
+				PRICE_PER_PACKAGE + salePriceperpackage + SPACE +
+				SEPARATOR_LINE + SPACE +
+				TOTAL + ((productionObtained * salePriceperpackage) - totalValueOfExpense) + "\n");
 	}
 }
 
