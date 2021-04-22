@@ -34,26 +34,27 @@ public class Console {
 	public static final String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
 	public static final String MESSAGE_CROPS = "\n		Cultivos"; 
 	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada. Por favor, intentelo nuevamente. \n";
-	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Mostrar número de cultivos en progreso por especie.	\n 4.R2.	\n 0.Volver atrás\n";
+	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Mostrar número de cultivos en progreso por especie.	\n 4.Mostrar número de cultivos por especie finalizados.	\n 5.Obtener porcentaje de crecimiento por especie.		\n 6.Obtener porcentaje de tierra ocupada por tipo de planta		\n 0.Volver atrás\n";
 	public static final String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = " Elija el tipo de planta que desea sembrar:	\n  1. Papa.	\n  2. Arveja.	\n  3. Frijol.	\n  4. Maiz";
 	public static final String VALIDATOR_OF_DATE = "\\d{1,2}/\\d{1,2}/\\d{4}";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
 	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
-	public static final String MESSAGE_FOR_PLANTING_LAND = "Ingrese en metros cuadrados la cantidad de terreno que sera sembrada";
+	public static final String MESSAGE_FOR_PLANTING_LAND = "Ingrese en metros cuadrados la cantidad de terreno que desea usar para la siembra";
 	public static final String MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT = "Gran eleccion de tierra, la cantidad de semilla optima para esta siembra es de : ";
 	public static final String MESSAGE_IF_THEY_ARE_POUNDS = " libras.";
 	public static final String MESSAGE_IF_THEY_ARE_ARROBAS = " arrobas.";
 	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
 	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guarado con exito!!!";
 	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
-	public static final String MESSAGE_FOR_SHOW_NUMBER_CROPS_BY_SPECIE = "Mostrar el número de cultivos por especie.";
+	public static final String MESSAGE_FOR_SHOW_NUMBER_CROPS_BY_SPECIE_FINISHED = "Mostrar el número de cultivos por especie terminados.";
 	public static final String MESSAGE_FOR_WAY_TO_ADD_CROP = "\n   1.Añadir un cultivo en curso.	\n   2.Añadir un cultivo finalizado. \n   0.Volver atrás"; 
 	public static final String MESSAGE_FOR_READ_VALUE_EXPENSE_CROP = "\nPor favor, ingrese sus gastos totales para este cultivo";
 	public static final String MESSAGE_FOR_READ_VALUE_OF_PRUDCTION_OBTAINED = "Por favor, ingrese la cantidad cosechada en bultos"; 
 	public static final String MESSAGE_FOR_READ_PRICE_PER_PACKAGE = "Por favor, ingrese el precio al que vendió cada bulto de la mercancía"; 
 	public static final String MESSAGE_FOR_CHOOSE_TYPE_CROP = "Por favor, elija qué tipo de cultivos desea visualizar\n \n   1.Cultivos en crecimiento. \n   2.Cultivos terminados. \n   0.Volver atrás.";
 	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "";
-	public static final String HEADER_CROPS_BY_SPECIE = "	   ---Cultivos por espeice---			"; 
+	public static final String HEADER_CROPS_BY_SPECIE_IN_PROGRESS = "    ---Cultivos por especie en progreso---			"; 
+	public static final String HEADER_CROPS_BY_SPECIE_FINISHED = "    ---Cultivos por especie finalizados---			"; 
 	public static final String HEADER_TABLE = " _______________________________________________\n|\t\t\t|\t\t\t|\n|\t%s\t\t|\t%s\t|\n|_______________________|_______________________|\n";
 	public static final String POTATO = "Papa"; 
 	public static final String VETCH = "Arveja";
@@ -65,7 +66,7 @@ public class Console {
 	public static final String FORMAT_PART_OF_TABLE = "%1$-26s %2$-10s\n";
 	public static final String TYPE = "Tipo"; 
 	public static final String AMOUNT = "Cantidad";
-	public static final String FINAL_LINE = "|_______________________|_______________________|";
+	public static final String FINAL_LINE = "|_______________________|_______________________|";	
 //	public static final String 
 //	public static final String 
 //	public static final String 
@@ -97,8 +98,6 @@ public class Console {
 	 }
 	 
 	 public void printInTableFormat(int[] cropsInProgress) {
-		 System.out.println(HEADER_CROPS_BY_SPECIE);
-		 System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
 		 for(int i = 0; i < cropsInProgress.length; i++) {
 			 System.out.println(String.format(FORMAT,SEPARATOR_TABLE_LINE, HEADERS_PRODUCTS[i],SEPARATOR_TABLE_LINE, cropsInProgress[i], SEPARATOR_TABLE_LINE));
 		 }
@@ -106,6 +105,18 @@ public class Console {
 	 }
 	 public void showInvalidOptionMenu() {
 		 System.out.println(ERROR_INVALID_OPTION);
+	 }
+	 
+	 public void printCropsBySpecieInProgressAsTable(int[] cropsInProgress) {
+		 System.out.println(HEADER_CROPS_BY_SPECIE_IN_PROGRESS);
+		 System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
+		 this.printInTableFormat(cropsInProgress);
+	 }
+	 
+	 public void printCropsBySpecieFinishedAsTable(int[] cropsFinished) {
+		 System.out.println(HEADER_CROPS_BY_SPECIE_FINISHED);
+		 System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
+		 this.printInTableFormat(cropsFinished);
 	 }
 	
 	/**
@@ -131,7 +142,7 @@ public class Console {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_CROPS_MENU);
 		String option = scanner.nextLine();
-		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 5) {
+		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 7) {
 			System.out.println(ERROR_INVALID_OPTION);
 			option = scanner.nextLine();
 		}
@@ -340,7 +351,7 @@ public class Console {
 
 	//MÉTODO QUIZÁ INUTILIZADO PARA DESPUÉS
 	public void showNumberOfCropsBySpecieInProgress(int[] cropsInProgress) {
-		System.out.println(HEADER_CROPS_BY_SPECIE);
+		System.out.println(HEADER_CROPS_BY_SPECIE_IN_PROGRESS);
 		System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
 		System.out.printf(MESSAGE_NUMBER_CROPS_BY_SPECIE, cropsInProgress[0], cropsInProgress[1], cropsInProgress[2], cropsInProgress[3]);
 

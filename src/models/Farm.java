@@ -1,12 +1,14 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Farm {
 	
 	public static final int POUNDS_PER_TROUBLE = 25;
+	public static final int HUNDRED_PERCENT = 100;
 	private String name;
 	private String user;
 	private String password;
@@ -16,8 +18,8 @@ public class Farm {
 	private double totalGround;
 	private double groundOfAnimals;
 	private double groundOfCrops;
+	private double groundAvailableOfCrops;
 	private byte currentCrops;
-	
 	
 	public Farm(String name, double groundOfAnimals, double groundOfCrops, double totalGround, double initialCapital) {
 		this.name = name;
@@ -25,6 +27,7 @@ public class Farm {
 		this.groundOfCrops = groundOfCrops;
 		this.totalGround = totalGround;
 		this.initialCapital = initialCapital;
+		this.groundAvailableOfCrops = groundOfCrops;
 		cropsInProgress = new ArrayList<Crop>();
 		finishedCrops = new ArrayList<Crop>();
 		
@@ -76,7 +79,7 @@ public class Farm {
 	}
 	
 	public boolean itIsBigger(double ground) {
-		if(ground <= groundOfCrops) {
+		if(ground <= groundAvailableOfCrops) {
 			return false;
 		}
 		return true;
@@ -112,13 +115,67 @@ public class Farm {
 		
 	}
 	
-	/**
-	 * Metodo para obtener la cantidad de dias entrte la fecha actual y la fecha en la que se sembro el cultivo
-	 * @param fechaFinal
-	 * @return
-	 */
-
+	public int[] getNumberOfCropsByPlantSpecieFinished() {
+		int[] cropsFinishedAux = new int[4];
+		for(int i = 0; i < finishedCrops.size(); i++) {
+			if(finishedCrops.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
+				cropsFinishedAux[0]++; 
+			}
+			else if(finishedCrops.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
+				cropsFinishedAux[1]++;
+			}
+			else if(finishedCrops.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
+				cropsFinishedAux[2]++;
+			}
+			else if(finishedCrops.get(i).getSpecie().equals(PlantSpecie.CORN)) {
+				cropsFinishedAux[3]++;
+			}
+			
+		}
+		return cropsFinishedAux;
+	}
 	
+
+	public HashMap<String, Double> getPercentageGrowthRateByPlantSpecie(PlantSpecie plantSpecie) {
+		HashMap<String, Double> cropsList = new HashMap<String, Double>();
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getSpecie().equals(plantSpecie) && cropsInProgress.get(i).getGrowthPercentage() < 101) {
+				cropsList.put(String.valueOf(cropsInProgress.get(i).getId()), cropsInProgress.get(i).getGrowthPercentage());
+			}
+		}
+		return cropsList;
+	}
+	
+	public  HashMap<String, Double> getPercetageOfLandOcuppiedBySpecie(){
+		HashMap<String, Double> landOcuppied = new HashMap<String, Double>();
+		double[] landOcuppiedAux = new double[4];
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getGrowthPercentage() < 101) {
+				if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
+					landOcuppiedAux[0] += cropsInProgress.get(i).getGround();
+				}
+				else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
+					landOcuppiedAux[1] += cropsInProgress.get(i).getGround();
+				}
+				else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
+					landOcuppiedAux[2] += cropsInProgress.get(i).getGround();
+				}
+				else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.CORN)) {
+					landOcuppiedAux[3] += cropsInProgress.get(i).getGround();
+	
+				}
+			}
+		}
+		landOcuppied.put(PlantSpecie.POTATO.getLabel(), landOcuppiedAux[0]*HUNDRED_PERCENT/groundOfCrops);
+		landOcuppied.put(PlantSpecie.VETCH.getLabel(), landOcuppiedAux[1]*HUNDRED_PERCENT/groundOfCrops);
+		landOcuppied.put(PlantSpecie.BEANS.getLabel(), landOcuppiedAux[2]*HUNDRED_PERCENT/groundOfCrops);
+		landOcuppied.put(PlantSpecie.CORN.getLabel(), landOcuppiedAux[3]*HUNDRED_PERCENT/groundOfCrops);
+		
+		return landOcuppied;
+		
+	}
+	
+
 	
 	
 	
@@ -176,6 +233,12 @@ public class Farm {
 	}
 	public void setGroundOfCrops(double groundOfCrops) {
 		this.groundOfCrops = groundOfCrops;
+	}
+	public double getGroundAvailableOfCrops() {
+		return groundAvailableOfCrops;
+	}
+	public void setGroundAvailableOfCrops(double groundAvailableOfCrops) {
+		this.groundAvailableOfCrops = groundAvailableOfCrops;
 	}
 	public byte getCurrentCrops() {
 		return currentCrops;

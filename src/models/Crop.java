@@ -20,10 +20,8 @@ public class Crop {
 	public static final String TOTAL= "Total : ";
 	
 	private byte id;
-	private double growthRate;
 	private PlantSpecie specie;
 	private LocalDate seedTime;
-	private LocalDate completionTime;
 	private double ground;
 	private double[] amountSown; 
 	private double amountHarvested;
@@ -65,12 +63,7 @@ public class Crop {
 		this.salePriceperpackage = salePricePerPackage;
 	}
 	
-	public double getGrowthRatePercentage() {
-		if(specie.getLabel().equals(PlantSpecie.POTATO.getLabel())) {
-			return 0;
-		}
-		return 0;
-	}
+
 	
 	/**
 	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
@@ -84,16 +77,16 @@ public class Crop {
 		}
 	} 
 	
-	public int getDaysBetweenTwoDates(LocalDate fechaFinal) {
-		return (int) DAYS.between(seedTime, fechaFinal);
+	public int getDaysBetweenTwoDates() {
+		return (int) DAYS.between(seedTime, LocalDate.now());
 	}
 	
 	/**
 	 * Metodo para obtener el procentaje de crecimiento de un cultivo
 	 * @return porcentaje
 	 */
-	private double getGrowthPercentage(){
-		int timeUntilToday = getDaysBetweenTwoDates(LocalDate.now());
+	public double getGrowthPercentage(){
+		int timeUntilToday = getDaysBetweenTwoDates();
 		return (double)(timeUntilToday*HUNDRED_PERCENT/specie.getMaximunDuration());
 	}
 	
@@ -117,13 +110,7 @@ public class Crop {
 		this.id = id;
 	}
 
-	public double getGrowthRate() {
-		return growthRate;
-	}
 
-	public void setGrowthRate(double growthRate) {
-		this.growthRate = growthRate;
-	}
 
 	public PlantSpecie getSpecie() {
 		return specie;

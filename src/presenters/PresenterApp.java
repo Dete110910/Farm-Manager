@@ -3,7 +3,7 @@ package presenters;
 import java.time.LocalDate;
 
 import models.*;
-import views.Console;
+import views.*;
 import exceptions.views.*;
 
 
@@ -50,7 +50,13 @@ public class PresenterApp {
 					this.manageNumberOfCropsBySpecieInProgress();
 					break;
 			case 4:
-				
+					this.manageNumberOfCropsBySpecieFinished();
+					break;
+			case 5: 
+					this.managePercentageOfGrowthRateBySpecie();
+					break;
+					
+			case 6: this.manageGroundBySpecie();
 					break;
 			
 			case 0:
@@ -97,6 +103,7 @@ public class PresenterApp {
 			console.printData(console.MESSAGE_FOR_GREATER_EARTH);
 			amountOfLand = console.readAmountOfLand();
 		}
+		farm.setGroundAvailableOfCrops(farm.getGroundAvailableOfCrops() - amountOfLand);
 		double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
 		console.printData(console.showSowingAmount(production));
 		farm.addCropTypeInProgress(planSpecie, startOfCultivation, amountOfLand, production);
@@ -188,8 +195,24 @@ public class PresenterApp {
 	}
 	
 	private void manageNumberOfCropsBySpecieInProgress() {
-		console.printInTableFormat(farm.getNumberOfCropsByPlantSpecieInProgress());
+		console.printCropsBySpecieInProgressAsTable(farm.getNumberOfCropsByPlantSpecieInProgress());
 		managerCrops();
+	}
+	
+	private void manageNumberOfCropsBySpecieFinished() {
+		console.printCropsBySpecieInProgressAsTable(farm.getNumberOfCropsByPlantSpecieFinished());
+		managerCrops();
+	}
+	
+	private void managePercentageOfGrowthRateBySpecie() {
+		new PrintHashMap(farm.getPercentageGrowthRateByPlantSpecie(this.getTypePlant(console.readPlantTypeOption())));
+		managerCrops();
+	}
+	
+	private void manageGroundBySpecie() {
+		new PrintHashMap(farm.getPercetageOfLandOcuppiedBySpecie());
+		managerCrops();
+
 	}
 
 	
