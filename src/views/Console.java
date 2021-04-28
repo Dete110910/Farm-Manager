@@ -34,8 +34,8 @@ public class Console {
 	public static final String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
 	public static final String MESSAGE_CROPS = "\n		Cultivos"; 
 	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada. Por favor, intentelo nuevamente. \n";
-	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Mis cultivos.	\n 3.Mostrar número de cultivos en progreso por especie.	\n 4.Mostrar número de cultivos por especie finalizados.	\n 5.Obtener porcentaje de crecimiento por especie.		\n 6.Obtener porcentaje de tierra ocupada por tipo de planta		\n 0.Volver atrás\n";
-	public static final String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = " Elija el tipo de planta que desea sembrar:	\n  1. Papa.	\n  2. Arveja.	\n  3. Frijol.	\n  4. Maiz";
+	public static final String MESSAGE_CROPS_MENU = "\n 1.Añadir cultivo.	\n 2.Añadir gasto a un cultivo	\n 3.Mis cultivos.	\n 4.Mostrar número de cultivos en progreso por especie.	\n 5.Mostrar número de cultivos por especie finalizados.	\n 6.Obtener porcentaje de crecimiento por especie.		\n 7.Obtener porcentaje de tierra ocupada por tipo de planta	\n 8.Obtener gastos por cultivo		\n 0.Volver atrás\n";
+	public static final String MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT = " Elija el tipo de planta que desea:\n	\n  1. Papa.	\n  2. Arveja.	\n  3. Frijol.	\n  4. Maiz		\n  \n  0.Volver a \"Cultivos\"";
 	public static final String VALIDATOR_OF_DATE = "\\d{1,2}/\\d{1,2}/\\d{4}";
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
 	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
@@ -44,7 +44,7 @@ public class Console {
 	public static final String MESSAGE_IF_THEY_ARE_POUNDS = " libras.";
 	public static final String MESSAGE_IF_THEY_ARE_ARROBAS = " arrobas.";
 	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
-	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guarado con exito!!!";
+	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guardado con exito!!!";
 	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
 	public static final String MESSAGE_FOR_SHOW_NUMBER_CROPS_BY_SPECIE_FINISHED = "Mostrar el número de cultivos por especie terminados.";
 	public static final String MESSAGE_FOR_WAY_TO_ADD_CROP = "\n   1.Añadir un cultivo en curso.	\n   2.Añadir un cultivo finalizado. \n   0.Volver atrás"; 
@@ -67,6 +67,14 @@ public class Console {
 	public static final String TYPE = "Tipo"; 
 	public static final String AMOUNT = "Cantidad";
 	public static final String FINAL_LINE = "|_______________________|_______________________|";	
+	public static final String CONCEPT = "Concepto";
+	public static final String VALUE = "Valor";
+	public static final String MESSAGE_CHOOSE_ID_OF_CROP = "Por favor, elija el id del cultivo que desea";
+	public static final String MESSAGE_CHOOSE_TYPE_EXPENSE = "Por favor, elija el tipo de gasto que desea agregar: \n  1. Siembra.	\n  2. Cuidados.		\n  3. Preparación de tierra.	\n  4. Cosecha.		\n\n  0. Cancelar.";
+	public static final String MESSAGE_FOR_READ_PRICE_EXPENSE_TYPE_CROP = "Por favor, ingrese el valor del gasto: "; 
+//	public static final String 
+//	public static final String 
+//	public static final String 
 //	public static final String 
 //	public static final String 
 //	public static final String 
@@ -142,7 +150,7 @@ public class Console {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_CROPS_MENU);
 		String option = scanner.nextLine();
-		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 7) {
+		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 9) {
 			System.out.println(ERROR_INVALID_OPTION);
 			option = scanner.nextLine();
 		}
@@ -159,7 +167,8 @@ public class Console {
 		try {
 			Double.parseDouble(string);
 			return true;
-		} catch (NumberFormatException nfe){
+		}
+		catch (NumberFormatException nfe){
 			return false;
 		}
 	}
@@ -298,8 +307,8 @@ public class Console {
 	public byte readPlantTypeOption() {
 		System.out.println(MESSAGE_TO_CHOOSE_THE_TYPE_OF_PLANT);
 		String option = scanner.nextLine();
-		while(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 4) {
-			System.out.println("Ponga el error");
+		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 4) {
+			System.out.println(ERROR_INVALID_OPTION);
 			option = scanner.nextLine();
 		}
 		return Byte.parseByte(option);
@@ -347,16 +356,6 @@ public class Console {
 		}
 		return result;
 	}
-	
-
-	//MÉTODO QUIZÁ INUTILIZADO PARA DESPUÉS
-	public void showNumberOfCropsBySpecieInProgress(int[] cropsInProgress) {
-		System.out.println(HEADER_CROPS_BY_SPECIE_IN_PROGRESS);
-		System.out.printf(HEADER_TABLE, TYPE, AMOUNT);
-		System.out.printf(MESSAGE_NUMBER_CROPS_BY_SPECIE, cropsInProgress[0], cropsInProgress[1], cropsInProgress[2], cropsInProgress[3]);
-
-	}
-	
 	
 	public byte readOptionForWayToAdd() {
 		System.out.println(MESSAGE_FOR_WAY_TO_ADD_CROP);
@@ -416,7 +415,57 @@ public class Console {
 	}
 	
 	
+	public void printExpenseListByTypeCrop(ArrayList<Byte> expenseList){
+		if(expenseList.size() != 0){
+			System.out.println(MESSAGE_CHOOSE_ID_OF_CROP);
+			for(int i = 0; i < expenseList.size(); i++) {
+				System.out.println((i + 1) + ") " + "Id: " + expenseList.get(i));
+			}
+		}
+		else
+			System.out.println(MESSAGE_FOR_VOID_LIST);
+		
+	}
 	
+	public byte readExpenseListByTypeCrop(int sizeList) {
+		byte option = scanner.nextByte();
+		while(!isNumeric(String.valueOf(option)) || option < 1 || option > sizeList) {
+			System.out.println(ERROR_INVALID_OPTION);
+			option = scanner.nextByte();
+		}
+		return option;
+		
+	}
+	
+	public byte readExpenseTypeCrop() {
+		System.out.println(MESSAGE_CHOOSE_TYPE_EXPENSE);
+		byte option = scanner.nextByte();
+		while(!isNumeric(String.valueOf(option)) || option < 0 || option > 4) {
+			System.out.println(ERROR_INVALID_OPTION);
+			option = scanner.nextByte();
+		}
+		
+		return option;
+	}
+	
+	public double readPriceExpenseTypeCrop() {
+		System.out.println(MESSAGE_FOR_READ_PRICE_EXPENSE_TYPE_CROP);
+		double price = scanner.nextDouble();
+		while(!isNumeric(String.valueOf(price))) {
+			System.out.println(ERROR_INVALIDATE_VALUE);
+			price = scanner.nextDouble();
+		}
+		
+		return price;
+	}
+	
+
+	public void printExpesesByCrop(String[][] listExpense) {
+		System.out.printf(HEADER_TABLE, CONCEPT, VALUE);
+		for(int i = 0; i < listExpense.length; i++) {
+			 System.out.println(String.format(FORMAT,SEPARATOR_TABLE_LINE, listExpense[i][0],SEPARATOR_TABLE_LINE, listExpense[i][1], SEPARATOR_TABLE_LINE));
+		 }
+	}
 	
 	
 	
@@ -426,3 +475,4 @@ public class Console {
 	
 	
 }
+

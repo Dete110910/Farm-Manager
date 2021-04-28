@@ -2,7 +2,7 @@ package models;
 
 public enum ExpenseTypeCrop {
 	
-	SOWING("Siembra"), CARE("Cuidados"), PREPARATION_GROUND("Tierra de preparación"), HARVEST("Cosecha");
+	SOWING("Siembra"), CARE("Cuidados"), PREPARATION_GROUND("Preparación de tierra"), HARVEST("Cosecha");
 	
 	private String label;
 	

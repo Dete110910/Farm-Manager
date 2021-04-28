@@ -1,6 +1,7 @@
 package presenters;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import models.*;
 import views.*;
@@ -44,19 +45,25 @@ public class PresenterApp {
 					this.manageAddCrop();
 					break;
 			case 2:
-					this.manageShowMyCrops();
+					this.manageAddExpense();
 					break;
 			case 3:
-					this.manageNumberOfCropsBySpecieInProgress();
+					this.manageShowMyCrops();
 					break;
 			case 4:
-					this.manageNumberOfCropsBySpecieFinished();
+					this.manageNumberOfCropsBySpecieInProgress();
 					break;
 			case 5: 
-					this.managePercentageOfGrowthRateBySpecie();
+					this.manageNumberOfCropsBySpecieFinished();
 					break;
 					
-			case 6: this.manageGroundBySpecie();
+			case 6: this.managePercentageOfGrowthRateBySpecie();
+					break;
+					
+			case 7: this.manageGroundBySpecie();
+					break;
+			
+			case 8: this.manageExpensesByCrop();
 					break;
 			
 			case 0:
@@ -94,7 +101,7 @@ public class PresenterApp {
 		}
 		catch(ExceptionDate exceptionDate){
 			System.out.println(exceptionDate.getMessage());
-			manageAddCrop();
+			manageAddCropsInCourse();
 			
 		}
 		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
@@ -136,6 +143,50 @@ public class PresenterApp {
 
 		
 	}
+	
+	private void manageAddExpense() {
+		ArrayList<Byte> expenseList = farm.getCropByPlantSpecie(this.getTypePlant(console.readPlantTypeOption()));
+		int sizeExpenseList = expenseList.size();
+		if(sizeExpenseList == 0) {
+			console.printExpenseListByTypeCrop(expenseList);
+			this.manageAddExpense();
+		}
+		else {
+			console.printExpenseListByTypeCrop(expenseList);
+			byte cropById = console.readExpenseListByTypeCrop(sizeExpenseList);
+			Crop crop = farm.getCropById(cropById);
+			byte typeCrop = console.readExpenseTypeCrop(); 		
+			crop.addExpense(this.getExpenseTypeCrop(typeCrop), console.readPriceExpenseTypeCrop());
+			managerCrops();
+		}
+	}
+	
+	private ExpenseTypeCrop getExpenseTypeCrop(byte option) {
+		ExpenseTypeCrop expenseTypeCrop = null;
+		switch(option) {
+				case 1:
+					expenseTypeCrop = ExpenseTypeCrop.SOWING;
+					break;
+				
+				case 2:
+					expenseTypeCrop = ExpenseTypeCrop.CARE;
+					break;
+				
+				case 3: 
+					expenseTypeCrop = ExpenseTypeCrop.PREPARATION_GROUND;
+					break;
+				
+				case 4: 
+					expenseTypeCrop = ExpenseTypeCrop.HARVEST;
+					break;
+					
+				case 0:
+					this.managerCrops();
+					break;
+		}
+		return expenseTypeCrop;
+	}
+	
 	private void manageShowMyCrops() {
 		byte option = console.readTypeOfCrop();
 		switch(option) {
@@ -189,6 +240,10 @@ public class PresenterApp {
 				plantSpecieAux = PlantSpecie.CORN;
 				break;
 		
+		case 0:
+				this.managerCrops();
+				break;
+		
 		}
 		
 		return plantSpecieAux;
@@ -214,6 +269,14 @@ public class PresenterApp {
 		managerCrops();
 
 	}
+	
+	private void manageExpensesByCrop() {
+		ArrayList<Byte> expenseList = farm.getCropByPlantSpecie(this.getTypePlant(console.readPlantTypeOption()));
+		int arrayListSize = expenseList.size();
+		console.printExpenseListByTypeCrop(expenseList);
+		console.readExpenseListByTypeCrop(arrayListSize);
+		
+	}
 
 	
 	private void managerOfBovine() {
@@ -230,10 +293,6 @@ public class PresenterApp {
 	
 	
 	
-//	public static void main(String[] sa) {
-//		PresenterApp asd = new PresenterApp();
-//		System.out.println(asd.getTypePlant((byte)2).getLabel());
-//		
-//	}
+
 
 }

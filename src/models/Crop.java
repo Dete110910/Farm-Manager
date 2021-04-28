@@ -28,7 +28,7 @@ public class Crop {
 	private int productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
-	private double totalValueOfExpense;
+	private double totalValueOfExpense; //no la estamos usando. Es una variable local en un método de abajo. ¿Deberíamos dejarla ahí? Quizá la estoy usando mal
 	private double expenseCropFinished;
 	
 	
@@ -40,6 +40,7 @@ public class Crop {
 		this.amountSown = amountSown;
 		this.id = id;
 		expenseCrop = new ArrayList<ExpenseCrop>();
+		totalValueOfExpense = 0; // no estoy seguro de si se debería inicializar. En caso de ser así, estaría en 0
 	}
 	
 	/**
@@ -91,16 +92,31 @@ public class Crop {
 	}
 	
 	
-	
-	 
-	
 	public void productionEstimate() {
 		
 	}
 	
 	public void addExpense(ExpenseTypeCrop expenseTypeCrop, double price) {
-		
+		expenseCrop.add(new ExpenseCrop(expenseTypeCrop, price));
 	}
+	
+	 public String[][] getExpenses(){
+		 String[][] listExpensesAux = null;
+		 for(int i = 0; i < expenseCrop.size(); i++) {
+			 for(int j = 0; j < 1; j++) {
+				 listExpensesAux[i][0] = String.valueOf(expenseCrop.get(i).getExpenseTypeCrop());
+				 listExpensesAux[i][1] = String.valueOf(expenseCrop.get(i).getPrice());
+			 }
+		 }
+		 return listExpensesAux;
+	 }
+	 
+	 public double calculateTotalValueOfExpenses() {
+		 for(int i = 0; i < expenseCrop.size(); i++) {
+			 totalValueOfExpense += expenseCrop.get(i).getPrice();
+		 }
+		 return totalValueOfExpense;
+	 }
 	
 	public byte getId() {
 		return id;
@@ -109,8 +125,6 @@ public class Crop {
 	public void setId(byte id) {
 		this.id = id;
 	}
-
-
 
 	public PlantSpecie getSpecie() {
 		return specie;
@@ -160,11 +174,11 @@ public class Crop {
 	public String toString() {
 		return (TYPE_PLANT + specie.getLabel() + SPACE +
 				ID + id  + SPACE +
-				TOTAL_VALUE_EXPENSES + totalValueOfExpense + SPACE + 
+				TOTAL_VALUE_EXPENSES + this.calculateTotalValueOfExpenses() + SPACE + 
 				SOLD_PACKAGE + productionObtained + SPACE +
 				PRICE_PER_PACKAGE + salePriceperpackage + SPACE +
 				SEPARATOR_LINE + SPACE +
-				TOTAL + ((productionObtained * salePriceperpackage) - totalValueOfExpense) + "\n");
+				TOTAL + ((productionObtained * salePriceperpackage) - this.calculateTotalValueOfExpenses()) + "\n");
 	}
 }
 
