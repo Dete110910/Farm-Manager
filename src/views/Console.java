@@ -40,9 +40,8 @@ public class Console {
 	public static final String FORMAT_OF_DATE = "d/M/yyyy";
 	public static final String MESSAGE_FOR_ENTRY_SEED_DATE = "\nPor favor ingrese la fecha de creación del cultivo en formato \"d/M/yyyy\": ";
 	public static final String MESSAGE_FOR_PLANTING_LAND = "Ingrese en metros cuadrados la cantidad de terreno que desea usar para la siembra";
-	public static final String MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT = "Gran eleccion de tierra, la cantidad de semilla optima para esta siembra es de : ";
-	public static final String MESSAGE_IF_THEY_ARE_POUNDS = " libras.";
-	public static final String MESSAGE_IF_THEY_ARE_ARROBAS = " arrobas.";
+	public static final String MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT_IN_ARROBAS = "Gran eleccion de tierra, la cantidad de semilla optima para esta siembra es de : %1.2f arrobas";
+	public static final String MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT_IN_POUNDS = "Gran eleccion de tierra, la cantidad de semilla optima para esta siembra es de : %1.2f libras";
 	public static final String MESSAGE_FOR_GREATER_EARTH = "La cantidad que acaba de ingresar excede los limites de tierra dados para la siembra, intente nuevamente";
 	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guardado con exito!!!";
 	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
@@ -55,7 +54,7 @@ public class Console {
 	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "";
 	public static final String HEADER_CROPS_BY_SPECIE_IN_PROGRESS = "    ---Cultivos por especie en progreso---			"; 
 	public static final String HEADER_CROPS_BY_SPECIE_FINISHED = "    ---Cultivos por especie finalizados---			"; 
-	public static final String HEADER_TABLE = " _______________________________________________\n|\t\t\t|\t\t\t|\n|\t%s\t\t|\t%s\t|\n|_______________________|_______________________|\n";
+	public static final String HEADER_TABLE = " _______________________________________________\n|\t%1$-16s|\t%2$-11s\t|\n|_______________________|_______________________|\n";
 	public static final String POTATO = "Papa"; 
 	public static final String VETCH = "Arveja";
 	public static final String BEANS = "Frijol";
@@ -107,9 +106,9 @@ public class Console {
 	 
 	 public void printInTableFormat(int[] cropsInProgress) {
 		 for(int i = 0; i < cropsInProgress.length; i++) {
-			 System.out.println(String.format(FORMAT,SEPARATOR_TABLE_LINE, HEADERS_PRODUCTS[i],SEPARATOR_TABLE_LINE, cropsInProgress[i], SEPARATOR_TABLE_LINE));
+			 System.out.print(String.format(FORMAT,SEPARATOR_TABLE_LINE, HEADERS_PRODUCTS[i],SEPARATOR_TABLE_LINE, cropsInProgress[i], SEPARATOR_TABLE_LINE));
 		 }
-		 System.out.println(FINAL_LINE);
+		 System.out.print(FINAL_LINE);
 	 }
 	 public void showInvalidOptionMenu() {
 		 System.out.println(ERROR_INVALID_OPTION);
@@ -331,6 +330,8 @@ public class Console {
 		
 	}
 	
+	
+	
 	/**
 	 * Metodo para obtener la cantidad de tierra que suara para el cultivo
 	 * @return cantidad de tierra en metros cuadrados
@@ -347,14 +348,12 @@ public class Console {
 	
 
 	
-	public String showSowingAmount(double[] production) {
-		String result = MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT;
+	public void showSowingAmount(double[] production) {
 		if(production[0] == 1) {
-			result += (String.valueOf(production[1]) + MESSAGE_IF_THEY_ARE_ARROBAS);
+			System.out.printf(MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT_IN_ARROBAS, production[1]);
 		}else {
-			result += (String.valueOf(production[1]) + MESSAGE_IF_THEY_ARE_POUNDS);
+			System.out.printf(MESSAGE_TO_SHOW_THE_OPTIMAL_SOWING_AMOUNT_IN_POUNDS, production[1]);
 		}
-		return result;
 	}
 	
 	public byte readOptionForWayToAdd() {
@@ -463,11 +462,12 @@ public class Console {
 	public void printExpesesByCrop(String[][] listExpense) {
 		System.out.printf(HEADER_TABLE, CONCEPT, VALUE);
 		for(int i = 0; i < listExpense.length; i++) {
-			 System.out.println(String.format(FORMAT,SEPARATOR_TABLE_LINE, listExpense[i][0],SEPARATOR_TABLE_LINE, listExpense[i][1], SEPARATOR_TABLE_LINE));
+			 System.out.print(String.format(FORMAT,SEPARATOR_TABLE_LINE, listExpense[i][0],SEPARATOR_TABLE_LINE, listExpense[i][1], SEPARATOR_TABLE_LINE));
 		 }
+		System.out.println(FINAL_LINE);
 	}
 	
-	
+
 	
 	
 	

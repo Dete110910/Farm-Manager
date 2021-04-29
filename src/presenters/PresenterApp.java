@@ -112,7 +112,7 @@ public class PresenterApp {
 		}
 		farm.setGroundAvailableOfCrops(farm.getGroundAvailableOfCrops() - amountOfLand);
 		double[] production = farm.calculateEstimatedProduction(planSpecie, amountOfLand);
-		console.printData(console.showSowingAmount(production));
+		console.showSowingAmount(production);
 		farm.addCropTypeInProgress(planSpecie, startOfCultivation, amountOfLand, production);
 		console.printData(console.MESSAGE_FOR_SAVED_CROP);
 		managerCrops();
@@ -134,7 +134,7 @@ public class PresenterApp {
 			amountOfLand = console.readAmountOfLand();
 		}
 		double[] production = farm.calculateEstimatedProduction(plantSpecie, amountOfLand);
-		console.printData(console.showSowingAmount(production));
+		console.showSowingAmount(production);
 		double expenseCrop = console.readValueOfExpense();
 		int productionObatined = console.readProductionObtained();
 		double salesPricePerPackage = console.readSalePricePerPackage();
@@ -274,7 +274,9 @@ public class PresenterApp {
 		ArrayList<Byte> expenseList = farm.getCropByPlantSpecie(this.getTypePlant(console.readPlantTypeOption()));
 		int arrayListSize = expenseList.size();
 		console.printExpenseListByTypeCrop(expenseList);
-		console.readExpenseListByTypeCrop(arrayListSize);
+		String[][] crop = farm.getExpensesByIdCrop(console.readExpenseListByTypeCrop(arrayListSize));
+		console.printExpesesByCrop(crop);
+		managerCrops();
 		
 	}
 

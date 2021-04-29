@@ -101,10 +101,10 @@ public class Crop {
 	}
 	
 	 public String[][] getExpenses(){
-		 String[][] listExpensesAux = null;
+		 String[][] listExpensesAux = new String[expenseCrop.size()][2];
 		 for(int i = 0; i < expenseCrop.size(); i++) {
 			 for(int j = 0; j < 1; j++) {
-				 listExpensesAux[i][0] = String.valueOf(expenseCrop.get(i).getExpenseTypeCrop());
+				 listExpensesAux[i][0] = String.valueOf(expenseCrop.get(i).getExpenseTypeCrop().getLabel());
 				 listExpensesAux[i][1] = String.valueOf(expenseCrop.get(i).getPrice());
 			 }
 		 }
