@@ -85,9 +85,6 @@ public class Farm {
 		return true;
 	}
 	
-	
-	
-	
 	public String deleteCrop() {
 		return "Falta por implementar";
 	}
@@ -135,7 +132,6 @@ public class Farm {
 		return cropsFinishedAux;
 	}
 	
-
 	public HashMap<String, Double> getPercentageGrowthRateByPlantSpecie(PlantSpecie plantSpecie) {
 		HashMap<String, Double> cropsList = new HashMap<String, Double>();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -175,9 +171,35 @@ public class Farm {
 		
 	}
 	
+	public ArrayList<Byte> getCropByPlantSpecie(PlantSpecie plantSpecie){
+		ArrayList<Byte> expenseList = new ArrayList<Byte>();
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getSpecie().getLabel().equals(plantSpecie.getLabel())) {
+				expenseList.add(cropsInProgress.get(i).getId());
+			}
+		}
+		return expenseList;
+	}
+	
 
+	public Crop getCropById(byte id) {
+		Crop cropAux = null;
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getId() == id ) {
+				cropAux = cropsInProgress.get(i);
+			}
+		}
+		
+		return cropAux;
+	}
 	
-	
+	//creo que debo llamar al método getExpenses de crop para acá y cuadrar el presentador
+
+	public String[][] getExpensesByIdCrop(byte id){
+		Crop cropAux = this.getCropById(id);
+		String[][] expensesList = cropAux.getExpenses();
+		return expensesList;
+	}
 	
 	
 	public String getName() {
