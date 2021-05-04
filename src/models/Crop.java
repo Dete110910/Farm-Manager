@@ -19,6 +19,9 @@ public class Crop {
 	public static final String SEPARATOR_LINE = "________________________________________";
 	public static final String TOTAL= "Total : ";
 	
+	public static final String DATE_OF_CREATION = "Fecha de creación: ";
+	public static final String GROUND = "Terreno ocupado: ";
+	
 	private byte id;
 	private PlantSpecie specie;
 	private LocalDate seedTime;
@@ -28,7 +31,6 @@ public class Crop {
 	private int productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
-	private double totalValueOfExpense; //no la estamos usando. Es una variable local en un método de abajo. ¿Deberíamos dejarla ahí? Quizá la estoy usando mal
 	private double expenseCropFinished;
 	
 	
@@ -40,7 +42,6 @@ public class Crop {
 		this.amountSown = amountSown;
 		this.id = id;
 		expenseCrop = new ArrayList<ExpenseCrop>();
-		totalValueOfExpense = 0; // no estoy seguro de si se debería inicializar. En caso de ser así, estaría en 0
 	}
 	
 	/**
@@ -66,18 +67,7 @@ public class Crop {
 	
 
 	
-	/**
-	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
-	 * @return double con el valor 
-	 */
-	public void getFullValueOfExpenses() {
-		if(expenseCrop.size() > 0) {
-			for (int i = 0; i < expenseCrop.size(); i++) {
-				totalValueOfExpense += expenseCrop.get(i).getPrice();
-			}
-		}
-	} 
-	
+
 	public int getDaysBetweenTwoDates() {
 		return (int) DAYS.between(seedTime, LocalDate.now());
 	}
@@ -112,12 +102,25 @@ public class Crop {
 	 }
 	 
 	 public double calculateTotalValueOfExpenses() {
-		 for(int i = 0; i < expenseCrop.size(); i++) {
-			 totalValueOfExpense += expenseCrop.get(i).getPrice();
+		 double totalValueOfExpense = 0;
+		 if(expenseCrop.size() > 0) {
+			 for(int i = 0; i < expenseCrop.size(); i++) {
+				 totalValueOfExpense += expenseCrop.get(i).getPrice();
+			 }
+			 return totalValueOfExpense;
 		 }
-		 return totalValueOfExpense;
+		 else 
+			 return 0;
+		 
 	 }
-	
+	 
+	 public boolean validateGrowthRateCrop(LocalDate dateEntry) {
+		 if(dateEntry.until(LocalDate.now(), DAYS) > specie.getMaximunDuration()) {
+			 return true;
+		 }
+		 return false;
+	 }
+
 	public byte getId() {
 		return id;
 	}
@@ -170,6 +173,15 @@ public class Crop {
 		return expenseCrop;
 	}
 	
+	
+
+	 public String toStringInCourse() {
+		 return (TYPE_PLANT + specie.getLabel() + SPACE + 
+				 ID + id + SPACE +
+				 GROUND + ground + SPACE +
+				 DATE_OF_CREATION + seedTime + SPACE); 
+	 }
+//	
 	@Override
 	public String toString() {
 		return (TYPE_PLANT + specie.getLabel() + SPACE +

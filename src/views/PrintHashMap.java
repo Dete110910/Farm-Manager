@@ -5,6 +5,8 @@ public class PrintHashMap {
 	private HashMap<String, Double> map;
 	private String[][] result;
 	
+	public static final String MESSAGE_FOR_HEADER_GRAPHIC = "asd";
+	
 	public PrintHashMap(HashMap<String, Double> map) {
 		this.map = map;
 		result = new String[map.size() * 4 + 1][42];
@@ -185,7 +187,9 @@ public class PrintHashMap {
 		return result;
 	}
 	
+	
 	public void printData() {
+		System.out.println(MESSAGE_FOR_HEADER_GRAPHIC);
 		fillSpacesInResult();
 		putKeys();
 		fillSeparators();

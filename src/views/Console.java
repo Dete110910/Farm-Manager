@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import exceptions.views.*;
 
 
+
 import java.util.Scanner;
 
 /**
@@ -30,7 +31,7 @@ public class Console {
 	public static final String MESSAGE_READ_TOTAL_GROUND = "Ingrese en metros cuadradros el terreno total de la finca";
 	public static final byte   MINIMUM_LAND = 50;
 	public static final String MESSAGE_FOR_SHOW_HEADER = "					Finca ";
-	public static final String MESSAGE_CHOOSE_OPTION = "Por favor, elija la opción que desea";
+	public static final String MESSAGE_CHOOSE_OPTION = "\nPor favor, elija la opción que desea";
 	public static final String MESSAGE_MAIN_MENU = "_________________________________________\n1. Administrador de cultivos.            |\n2. Administrador de bovinos.             |\n3. Administrador de gallineros.          |\n4. Administrador de panales de abejas.   |\n5. Cerrar sesion.                        |\n6. Cerrar el programa.                   |\n_________________________________________|";	
 	public static final String MESSAGE_CROPS = "\n		Cultivos"; 
 	public static final String ERROR_INVALID_OPTION = "No pudimos encontrar la opción seleccionada. Por favor, intentelo nuevamente. \n";
@@ -50,7 +51,7 @@ public class Console {
 	public static final String MESSAGE_FOR_READ_VALUE_EXPENSE_CROP = "\nPor favor, ingrese sus gastos totales para este cultivo";
 	public static final String MESSAGE_FOR_READ_VALUE_OF_PRUDCTION_OBTAINED = "Por favor, ingrese la cantidad cosechada en bultos"; 
 	public static final String MESSAGE_FOR_READ_PRICE_PER_PACKAGE = "Por favor, ingrese el precio al que vendió cada bulto de la mercancía"; 
-	public static final String MESSAGE_FOR_CHOOSE_TYPE_CROP = "Por favor, elija qué tipo de cultivos desea visualizar\n \n   1.Cultivos en crecimiento. \n   2.Cultivos terminados. \n   0.Volver atrás.";
+	public static final String MESSAGE_FOR_CHOOSE_TYPE_CROP = "\nPor favor, elija qué tipo de cultivos desea visualizar\n \n   1.Cultivos en crecimiento. \n   2.Cultivos terminados. \n   0.Volver atrás.";
 	public static final String MESSAGE_NUMBER_CROPS_BY_SPECIE = "";
 	public static final String HEADER_CROPS_BY_SPECIE_IN_PROGRESS = "    ---Cultivos por especie en progreso---			"; 
 	public static final String HEADER_CROPS_BY_SPECIE_FINISHED = "    ---Cultivos por especie finalizados---			"; 
@@ -68,12 +69,13 @@ public class Console {
 	public static final String FINAL_LINE = "|_______________________|_______________________|";	
 	public static final String CONCEPT = "Concepto";
 	public static final String VALUE = "Valor";
-	public static final String MESSAGE_CHOOSE_ID_OF_CROP = "Por favor, elija el id del cultivo que desea";
+	public static final String MESSAGE_CHOOSE_CROP_OPTION = "Por favor, seleccione el cultivo que desea.";
 	public static final String MESSAGE_CHOOSE_TYPE_EXPENSE = "Por favor, elija el tipo de gasto que desea agregar: \n  1. Siembra.	\n  2. Cuidados.		\n  3. Preparación de tierra.	\n  4. Cosecha.		\n\n  0. Cancelar.";
 	public static final String MESSAGE_FOR_READ_PRICE_EXPENSE_TYPE_CROP = "Por favor, ingrese el valor del gasto: "; 
-//	public static final String 
-//	public static final String 
-//	public static final String 
+	public static final String MESSAGE_FOR_CROP_FINISHED = "			**Tiene %d cultivo listo para cosechar**";
+	public static final String MESSAGE_FOR_CROPS_FINISHED = "			**Tiene %d cultivos listos para cosechar**";
+	public static final String ERROR_CROP_FINISHED = "Según la fecha que acaba de ingresar, su cultivo ya ha finalizado. Por favor verifique";
+	public static final String ID = "Id : ";
 //	public static final String 
 //	public static final String 
 //	public static final String 
@@ -133,7 +135,7 @@ public class Console {
 	public byte readOptionMainMenu() {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_MAIN_MENU);
-		String option = scanner.nextLine();
+		String option = scanner.nextLine().trim();
 		if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 6) {
 			System.err.println(ERROR_INVALID_OPTION);
 			return readOptionMainMenu();
@@ -148,10 +150,10 @@ public class Console {
 	public byte readOptionMenuCrop() {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_CROPS_MENU);
-		String option = scanner.nextLine();
+		String option = scanner.nextLine().trim();
 		while(!isNumeric(option) || Byte.parseByte(option) < 0 || Byte.parseByte(option) > 9) {
 			System.out.println(ERROR_INVALID_OPTION);
-			option = scanner.nextLine();
+			option = scanner.nextLine().trim();
 		}
 		return Byte.parseByte(option);
 		
@@ -162,9 +164,9 @@ public class Console {
 	 * @param cadena : String a evaluar
 	 * @return true : Si es numero, false : No es numero
 	 */
-	private static boolean isNumeric(String string){
+	private boolean isNumeric(String string){
 		try {
-			Double.parseDouble(string);
+			Double.parseDouble(string.trim());
 			return true;
 		}
 		catch (NumberFormatException nfe){
@@ -313,9 +315,17 @@ public class Console {
 		return Byte.parseByte(option);
 	}
 	
-	public LocalDate readSeedTime() throws ExceptionDate{
+
+	
+	public LocalDate readSeedTime() {
 		System.out.println(MESSAGE_FOR_ENTRY_SEED_DATE);
-		return this.validateSeedTime(scanner.nextLine());
+		try {
+			return this.validateSeedTime(scanner.nextLine());
+		}
+		catch(ExceptionDate exceptionDate) {
+			System.out.println(exceptionDate.MESSAGE);
+			return readSeedTime();
+		}
 	}
 	
 	public LocalDate validateSeedTime(String seedTime) throws ExceptionDate{
@@ -327,9 +337,7 @@ public class Console {
 			throw new ExceptionDate();
 			
 		}
-		
 	}
-	
 	
 	
 	/**
@@ -416,9 +424,9 @@ public class Console {
 	
 	public void printExpenseListByTypeCrop(ArrayList<Byte> expenseList){
 		if(expenseList.size() != 0){
-			System.out.println(MESSAGE_CHOOSE_ID_OF_CROP);
+			System.out.println(MESSAGE_CHOOSE_CROP_OPTION);
 			for(int i = 0; i < expenseList.size(); i++) {
-				System.out.println((i + 1) + ") " + "Id: " + expenseList.get(i));
+				System.out.println((i + 1) + ") " + ID + expenseList.get(i));
 			}
 		}
 		else
@@ -428,7 +436,7 @@ public class Console {
 	
 	public byte readExpenseListByTypeCrop(int sizeList) {
 		byte option = scanner.nextByte();
-		while(!isNumeric(String.valueOf(option)) || option < 1 || option > sizeList) {
+		while(!isNumeric(String.valueOf(option)) || option < 0 || option > sizeList) {
 			System.out.println(ERROR_INVALID_OPTION);
 			option = scanner.nextByte();
 		}
@@ -460,16 +468,38 @@ public class Console {
 	
 
 	public void printExpesesByCrop(String[][] listExpense) {
-		System.out.printf(HEADER_TABLE, CONCEPT, VALUE);
-		for(int i = 0; i < listExpense.length; i++) {
-			 System.out.print(String.format(FORMAT,SEPARATOR_TABLE_LINE, listExpense[i][0],SEPARATOR_TABLE_LINE, listExpense[i][1], SEPARATOR_TABLE_LINE));
-		 }
-		System.out.println(FINAL_LINE);
+		if(listExpense.length > 0) {
+			System.out.printf(HEADER_TABLE, CONCEPT, VALUE);
+			for(int i = 0; i < listExpense.length; i++) {
+			 	System.out.print(String.format(FORMAT,SEPARATOR_TABLE_LINE, listExpense[i][0],SEPARATOR_TABLE_LINE, listExpense[i][1], SEPARATOR_TABLE_LINE));
+		 	}
+			System.out.println(FINAL_LINE);
+		}
+		else
+			System.out.println(MESSAGE_FOR_VOID_LIST);
 	}
 	
+	public void printNotificationOfCropsFinished(byte numberOfCrops) {
+		if(numberOfCrops > 0 && numberOfCrops <= 1) {
+			System.out.printf(MESSAGE_FOR_CROP_FINISHED, numberOfCrops);
+			System.out.println("");
+		}
+		else if(numberOfCrops > 1) {
+			System.out.printf(MESSAGE_FOR_CROPS_FINISHED, numberOfCrops);
+			System.out.println(" ");
+		}
+		else
+			System.out.print("");
+	}
 
 	
-	
+	public void validateDaysBetweenTwoDates(boolean decision) {
+		if(decision) {
+			System.out.println(ERROR_CROP_FINISHED);
+		}
+		else
+			System.out.print("");
+	}
 	
 	
 	

@@ -18,12 +18,14 @@ public class PresenterApp {
 		//String nameOfFarm = console.readNameOfFarm();
 		//double[] grounds = console.readGrounds();
 		//console.readInitialCapital()
-		farm = new Farm("la granja", 25, 25, 12, 123);
+		farm = new Farm("la granja", 100, 200, 300, 123);
 		this.runApp();
 	}
 	
 	private void runApp() {
+		this.createCrop();
 		console.printData(console.MESSAGE_FOR_SHOW_HEADER + farm.getName());
+		console.printNotificationOfCropsFinished(farm.validateGrowthOfCrop());
 		byte option = console.readOptionMainMenu();		
 		switch(option) {
 		
@@ -65,7 +67,14 @@ public class PresenterApp {
 			
 			case 8: this.manageExpensesByCrop();
 					break;
-			
+					
+//			case 9: try {
+//				System.out.println(farm.getCropsInProgress().get(0).validateGrothRateCrop(console.readSeedTime()));
+//			}
+//			catch(ExceptionDate e){
+//				System.out.println(e.MESSAGE);
+//			}
+//			
 			case 0:
 					this.runApp();
 					break;
@@ -94,16 +103,14 @@ public class PresenterApp {
 		
 	}
 	
+	private void creadCropInCourse() {
+
+	}
+	
 	private void manageAddCropsInCourse() {
 		LocalDate startOfCultivation = null;
-		try {
-			startOfCultivation = console.readSeedTime();
-		}
-		catch(ExceptionDate exceptionDate){
-			System.out.println(exceptionDate.getMessage());
-			manageAddCropsInCourse();
-			
-		}
+		startOfCultivation = console.readSeedTime();
+		//console.validateDaysBetweenTwoDates(farm.validateGrowthOfCrop(startOfCultivation));
 		PlantSpecie planSpecie = getTypePlant(console.readPlantTypeOption());
 		double amountOfLand = console.readAmountOfLand();
 		while(farm.itIsBigger(amountOfLand)) {
@@ -120,13 +127,7 @@ public class PresenterApp {
 	
 	private void manageAddCropsFinished() {
 		LocalDate startOfCultivation = null;
-		try {
-			startOfCultivation = console.readSeedTime();
-		}
-		catch (ExceptionDate exceptionDate) {
-			System.out.println(exceptionDate.getMessage());
-		}
-		
+		startOfCultivation = console.readSeedTime();
 		PlantSpecie plantSpecie = getTypePlant(console.readPlantTypeOption());
 		double amountOfLand = console.readAmountOfLand();
 		while(farm.itIsBigger(amountOfLand)) {
@@ -206,7 +207,14 @@ public class PresenterApp {
 	}
 	
 	private void manageCropsInProgress() {
-		console.validateLengthOfLists(farm.getCropsInProgress());
+		if(farm.getCropsInProgress() != null) {
+			for(int i = 0; i < farm.getCropsInProgress().size() - 1; i++) {
+				console.printData(farm.getCropsInProgress().get(i).toStringInCourse());
+			}
+		}
+		else
+			System.out.println(console.MESSAGE_FOR_VOID_LIST);
+
 		manageShowMyCrops();
 	}
 	
@@ -276,8 +284,21 @@ public class PresenterApp {
 		console.printExpenseListByTypeCrop(expenseList);
 		String[][] crop = farm.getExpensesByIdCrop(console.readExpenseListByTypeCrop(arrayListSize));
 		console.printExpesesByCrop(crop);
-		managerCrops();
+		manageExpensesByCrop();
 		
+	}
+	
+	
+	private void createCrop() {
+	farm.addCropTypeInProgress(PlantSpecie.POTATO,LocalDate.of(2021, 02, 20), 30, farm.calculateEstimatedProduction(PlantSpecie.POTATO,2));
+	farm.addCropTypeInProgress(PlantSpecie.VETCH,LocalDate.of(2021, 02, 20), 10, farm.calculateEstimatedProduction(PlantSpecie.VETCH,2));
+	farm.addCropTypeInProgress(PlantSpecie.CORN,LocalDate.of(2021, 02, 20), 15, farm.calculateEstimatedProduction(PlantSpecie.CORN,2));
+	farm.addCropTypeInProgress(PlantSpecie.BEANS,LocalDate.of(2021, 02, 20), 15, farm.calculateEstimatedProduction(PlantSpecie.BEANS,2));
+	farm.addCropTypeInProgress(PlantSpecie.POTATO,LocalDate.of(2021, 02, 20), 20, farm.calculateEstimatedProduction(PlantSpecie.POTATO,2));
+	farm.addCropTypeInProgress(PlantSpecie.CORN,LocalDate.of(2021, 02, 20), 50, farm.calculateEstimatedProduction(PlantSpecie.CORN,2));
+	farm.addCropTypeInProgress(PlantSpecie.BEANS,LocalDate.of(2021, 02, 20), 25, farm.calculateEstimatedProduction(PlantSpecie.BEANS,2));
+	farm.addCropTypeInProgress(PlantSpecie.VETCH,LocalDate.of(2021, 04, 20), 30, farm.calculateEstimatedProduction(PlantSpecie.VETCH,2));
+
 	}
 
 	

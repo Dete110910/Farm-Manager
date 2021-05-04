@@ -12,7 +12,7 @@ public class Farm {
 	private String name;
 	private String user;
 	private String password;
-	private double initialCapital;
+	private double capital;
 	private ArrayList<Crop> cropsInProgress;
 	private ArrayList<Crop> finishedCrops;
 	private double totalGround;
@@ -26,7 +26,7 @@ public class Farm {
 		this.groundOfAnimals = groundOfAnimals;
 		this.groundOfCrops = groundOfCrops;
 		this.totalGround = totalGround;
-		this.initialCapital = initialCapital;
+		this.capital = initialCapital;
 		this.groundAvailableOfCrops = groundOfCrops;
 		cropsInProgress = new ArrayList<Crop>();
 		finishedCrops = new ArrayList<Crop>();
@@ -37,6 +37,7 @@ public class Farm {
 		currentCrops++;
 		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, currentCrops));
 	}
+	
 	
 	public void addCropTypeFinished(PlantSpecie specie, LocalDate seedTime, double ground, double[] amountSown, double expenseCrop, int productionObtained, double salesPricePerPackage){
 		finishedCrops.add(new Crop(specie, seedTime, ground, amountSown, expenseCrop, productionObtained, salesPricePerPackage));
@@ -78,6 +79,7 @@ public class Farm {
 		return production;
 	}
 	
+	
 	public boolean itIsBigger(double ground) {
 		if(ground <= groundAvailableOfCrops) {
 			return false;
@@ -85,9 +87,20 @@ public class Farm {
 		return true;
 	}
 	
+	public double decreaseCapitalFarm(double expense) {
+		capital = capital - expense;
+		return capital;
+	}
+	
+	public double increaseCapital(double sell) {
+		capital = capital + sell;
+		return capital;
+	}
+	
 	public String deleteCrop() {
 		return "Falta por implementar";
 	}
+	
 	
 	public int[] getNumberOfCropsByPlantSpecieInProgress() {
 		int[] cropsInProgressAux = new int[4];
@@ -112,6 +125,7 @@ public class Farm {
 		
 	}
 	
+	
 	public int[] getNumberOfCropsByPlantSpecieFinished() {
 		int[] cropsFinishedAux = new int[4];
 		for(int i = 0; i < finishedCrops.size(); i++) {
@@ -132,6 +146,7 @@ public class Farm {
 		return cropsFinishedAux;
 	}
 	
+	
 	public HashMap<String, Double> getPercentageGrowthRateByPlantSpecie(PlantSpecie plantSpecie) {
 		HashMap<String, Double> cropsList = new HashMap<String, Double>();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -141,6 +156,7 @@ public class Farm {
 		}
 		return cropsList;
 	}
+	
 	
 	public  HashMap<String, Double> getPercetageOfLandOcuppiedBySpecie(){
 		HashMap<String, Double> landOcuppied = new HashMap<String, Double>();
@@ -171,6 +187,7 @@ public class Farm {
 		
 	}
 	
+	
 	public ArrayList<Byte> getCropByPlantSpecie(PlantSpecie plantSpecie){
 		ArrayList<Byte> expenseList = new ArrayList<Byte>();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -193,12 +210,21 @@ public class Farm {
 		return cropAux;
 	}
 	
-	//creo que debo llamar al método getExpenses de crop para acá y cuadrar el presentador
-
+	
 	public String[][] getExpensesByIdCrop(byte id){
 		Crop cropAux = this.getCropById(id);
 		String[][] expensesList = cropAux.getExpenses();
 		return expensesList;
+	}
+	
+	public byte validateGrowthOfCrop() {
+		byte numberOfCropsGrown = 0;
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).validateGrowthRateCrop(cropsInProgress.get(i).getSeedTime())) {
+				numberOfCropsGrown++;
+			}
+		}
+		return numberOfCropsGrown;
 	}
 	
 	
@@ -221,10 +247,10 @@ public class Farm {
 		this.password = password;
 	}
 	public double getInitialCapital() {
-		return initialCapital;
+		return capital;
 	}
 	public void setInitialCapital(double initialCapital) {
-		this.initialCapital = initialCapital;
+		this.capital = initialCapital;
 	}
 	public ArrayList<Crop> getCropsInProgress() {
 		return cropsInProgress;
