@@ -21,6 +21,7 @@ public class Crop {
 	
 	public static final String DATE_OF_CREATION = "Fecha de creación: ";
 	public static final String GROUND = "Terreno ocupado: ";
+	public static final String INIITAL_CAPITAL = "Capital inicial: ";
 	
 	private byte id;
 	private PlantSpecie specie;
@@ -28,18 +29,20 @@ public class Crop {
 	private double ground;
 	private double[] amountSown; 
 	private double amountHarvested;
-	private int productionObtained;//Produccion vendida en bultos
+	private double productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
 	private double expenseCropFinished;
+	private double initialCapital;
 	
 	
 	
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, byte id) {
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double initialCapital, byte id) {
 		this.specie = specie;
 		this.seedTime = seedTime;
 		this.ground = ground;
 		this.amountSown = amountSown;
+		this.initialCapital = initialCapital;
 		this.id = id;
 		expenseCrop = new ArrayList<ExpenseCrop>();
 	}
@@ -55,14 +58,13 @@ public class Crop {
 	 * @param productionObtained
 	 * @param salePricePerPackage
 	 */
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double expenseCropFinished, int productionObtained, double salePricePerPackage) {
+	public Crop(PlantSpecie specie, LocalDate seedTime,  double expenseCropFinished, double productionObtained, double salePricePerPackage, byte id) {
 		this.specie = specie;
 		this.seedTime = seedTime;
-		this.ground = ground;
-		this.amountSown = amountSown;
 		this.expenseCropFinished = expenseCropFinished;
 		this.productionObtained = productionObtained;
 		this.salePriceperpackage = salePricePerPackage;
+		this.id = id;
 	}
 	
 
@@ -173,12 +175,19 @@ public class Crop {
 		return expenseCrop;
 	}
 	
+	public void setInitialCapital(double initialCapital) {
+		this.initialCapital = initialCapital;
+	}
 	
+	public double getInitialCapital() {
+		return this.initialCapital;
+	}
 
 	 public String toStringInCourse() {
 		 return (TYPE_PLANT + specie.getLabel() + SPACE + 
 				 ID + id + SPACE +
 				 GROUND + ground + SPACE +
+				 INIITAL_CAPITAL +  + initialCapital +  SPACE +
 				 DATE_OF_CREATION + seedTime + SPACE); 
 	 }
 //	
@@ -186,11 +195,10 @@ public class Crop {
 	public String toString() {
 		return (TYPE_PLANT + specie.getLabel() + SPACE +
 				ID + id  + SPACE +
-				TOTAL_VALUE_EXPENSES + this.calculateTotalValueOfExpenses() + SPACE + 
+				TOTAL_VALUE_EXPENSES + expenseCropFinished + SPACE + 
 				SOLD_PACKAGE + productionObtained + SPACE +
 				PRICE_PER_PACKAGE + salePriceperpackage + SPACE +
 				SEPARATOR_LINE + SPACE +
-				TOTAL + ((productionObtained * salePriceperpackage) - this.calculateTotalValueOfExpenses()) + "\n");
+				TOTAL + ((productionObtained * salePriceperpackage) - expenseCropFinished) + "\n");
 	}
 }
-

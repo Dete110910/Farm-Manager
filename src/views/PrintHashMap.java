@@ -7,10 +7,10 @@ public class PrintHashMap {
 	
 	public static final String MESSAGE_FOR_HEADER_GRAPHIC = "asd";
 	
-	public PrintHashMap(HashMap<String, Double> map) {
+	public PrintHashMap(HashMap<String, Double> map, String message) {
 		this.map = map;
 		result = new String[map.size() * 4 + 1][42];
-		this.printData();
+		this.printData(message);
 	}
 	
 	/**
@@ -188,8 +188,8 @@ public class PrintHashMap {
 	}
 	
 	
-	public void printData() {
-		System.out.println(MESSAGE_FOR_HEADER_GRAPHIC);
+	public void printData(String message) {
+		System.out.println(message);
 		fillSpacesInResult();
 		putKeys();
 		fillSeparators();

@@ -3,7 +3,6 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.LocalDate;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Farm {
 	
@@ -33,14 +32,14 @@ public class Farm {
 		
 	}
 	
-	public void addCropTypeInProgress(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown) {
+	public void addCropTypeInProgress(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown, double initialCapital) {
 		currentCrops++;
-		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, currentCrops));
+		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, initialCapital, currentCrops));
 	}
 	
 	
-	public void addCropTypeFinished(PlantSpecie specie, LocalDate seedTime, double ground, double[] amountSown, double expenseCrop, int productionObtained, double salesPricePerPackage){
-		finishedCrops.add(new Crop(specie, seedTime, ground, amountSown, expenseCrop, productionObtained, salesPricePerPackage));
+	public void addCropTypeFinished(PlantSpecie specie, LocalDate seedTime,  double expenseCropFinished, double productionObtained, double salePricePerPackage, byte id){
+		finishedCrops.add(new Crop(specie, seedTime, expenseCropFinished, productionObtained,salePricePerPackage, id));
 	}
 	
 	/**
@@ -97,8 +96,8 @@ public class Farm {
 		return capital;
 	}
 	
-	public String deleteCrop() {
-		return "Falta por implementar";
+	public void increaseGroundOfCrops(double ground) {
+		groundAvailableOfCrops += ground;
 	}
 	
 	
@@ -201,14 +200,16 @@ public class Farm {
 
 	public Crop getCropById(byte id) {
 		Crop cropAux = null;
-		for(int i = 0; i < cropsInProgress.size(); i++) {
+		boolean flag = true;
+		for(int i = 0; i < cropsInProgress.size() && flag; i++) {
 			if(cropsInProgress.get(i).getId() == id ) {
 				cropAux = cropsInProgress.get(i);
+				flag = false;
 			}
 		}
-		
 		return cropAux;
 	}
+	
 	
 	
 	public String[][] getExpensesByIdCrop(byte id){
@@ -227,6 +228,75 @@ public class Farm {
 		return numberOfCropsGrown;
 	}
 	
+	public void deleteCropInProgress(Crop cropInProgress) {
+		cropsInProgress.remove(cropInProgress);
+	
+	}
+	
+	public HashMap<String, Double> getPercentageOfExpensesByTypeCrop(){
+		HashMap<String, Double> listOfExpenses = new HashMap<String, Double>();
+		double[] expenses = new double[4];
+		double totalExpenses = this.getTotalExpenses();
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
+				expenses[0] += cropsInProgress.get(i).calculateTotalValueOfExpenses();
+			}
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
+				expenses[1] += cropsInProgress.get(i).calculateTotalValueOfExpenses();
+			}
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
+				expenses[2] += cropsInProgress.get(i).calculateTotalValueOfExpenses();
+			}
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.CORN)) {
+				expenses[3] += cropsInProgress.get(i).calculateTotalValueOfExpenses();
+			}
+		}
+		listOfExpenses.put(PlantSpecie.POTATO.getLabel(), (expenses[0] * HUNDRED_PERCENT)/totalExpenses);
+		listOfExpenses.put(PlantSpecie.VETCH.getLabel(), (expenses[1] * HUNDRED_PERCENT)/totalExpenses);
+		listOfExpenses.put(PlantSpecie.BEANS.getLabel(), (expenses[2] * HUNDRED_PERCENT)/totalExpenses);
+		listOfExpenses.put(PlantSpecie.CORN.getLabel(), (expenses[3]  * HUNDRED_PERCENT)/totalExpenses);
+		
+		return listOfExpenses;
+	}
+	
+	public double getTotalExpenses() {
+		double totalExpenses = 0;
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			totalExpenses += cropsInProgress.get(i).calculateTotalValueOfExpenses();
+		}
+		return totalExpenses;
+	}
+	
+	
+	public HashMap<String, Double> getPercentageOfCrops(){
+		HashMap<String, Double> listPercentageOfCrops = new HashMap<String, Double>();
+		double[] listOfCropsAux = new double[4];
+		for(int i = 0; i < cropsInProgress.size(); i++) {
+			if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
+				listOfCropsAux[0] += 1;
+				System.out.println("Sumo una");
+			} 
+			
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
+				listOfCropsAux[1] += 1;
+				System.out.println("Sumo vetch");
+			}
+			
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
+				listOfCropsAux[2] += 1;
+			}
+			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.CORN)) {
+				listOfCropsAux[3] += 1;
+			}
+		}
+		listPercentageOfCrops.put(PlantSpecie.POTATO.getLabel(), (listOfCropsAux[0] * HUNDRED_PERCENT) / cropsInProgress.size());
+		listPercentageOfCrops.put(PlantSpecie.VETCH.getLabel(), (listOfCropsAux[1] * HUNDRED_PERCENT) / cropsInProgress.size());
+		listPercentageOfCrops.put(PlantSpecie.BEANS.getLabel(), (listOfCropsAux[2] * HUNDRED_PERCENT) / cropsInProgress.size());
+		listPercentageOfCrops.put(PlantSpecie.CORN.getLabel(), (listOfCropsAux[3] * HUNDRED_PERCENT) / cropsInProgress.size());
+		
+		//System.out.println(cropsInProgress + " Lista");
+		return listPercentageOfCrops;
+	}
 	
 	public String getName() {
 		return name;
