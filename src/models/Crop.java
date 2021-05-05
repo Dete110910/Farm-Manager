@@ -19,28 +19,32 @@ public class Crop {
 	public static final String SEPARATOR_LINE = "________________________________________";
 	public static final String TOTAL= "Total : ";
 	
+	public static final String DATE_OF_CREATION = "Fecha de creación: ";
+	public static final String GROUND = "Terreno ocupado: ";
+	public static final String INIITAL_CAPITAL = "Capital inicial: ";
+	
 	private byte id;
 	private PlantSpecie specie;
 	private LocalDate seedTime;
 	private double ground;
 	private double[] amountSown; 
 	private double amountHarvested;
-	private int productionObtained;//Produccion vendida en bultos
+	private double productionObtained;//Produccion vendida en bultos
 	private double salePriceperpackage;//Precio de venta de un bulto
 	private ArrayList<ExpenseCrop> expenseCrop;
-	private double totalValueOfExpense; //no la estamos usando. Es una variable local en un método de abajo. ¿Deberíamos dejarla ahí? Quizá la estoy usando mal
 	private double expenseCropFinished;
+	private double initialCapital;
 	
 	
 	
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, byte id) {
+	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double initialCapital, byte id) {
 		this.specie = specie;
 		this.seedTime = seedTime;
 		this.ground = ground;
 		this.amountSown = amountSown;
+		this.initialCapital = initialCapital;
 		this.id = id;
 		expenseCrop = new ArrayList<ExpenseCrop>();
-		totalValueOfExpense = 0; // no estoy seguro de si se debería inicializar. En caso de ser así, estaría en 0
 	}
 	
 	/**
@@ -54,30 +58,18 @@ public class Crop {
 	 * @param productionObtained
 	 * @param salePricePerPackage
 	 */
-	public Crop(PlantSpecie specie, LocalDate seedTime, double ground ,double[] amountSown, double expenseCropFinished, int productionObtained, double salePricePerPackage) {
+	public Crop(PlantSpecie specie, LocalDate seedTime,  double expenseCropFinished, double productionObtained, double salePricePerPackage, byte id) {
 		this.specie = specie;
 		this.seedTime = seedTime;
-		this.ground = ground;
-		this.amountSown = amountSown;
 		this.expenseCropFinished = expenseCropFinished;
 		this.productionObtained = productionObtained;
 		this.salePriceperpackage = salePricePerPackage;
+		this.id = id;
 	}
 	
 
 	
-	/**
-	 * Metodo para obtener el total de lo que se ha gastado en el cultivo
-	 * @return double con el valor 
-	 */
-	public void getFullValueOfExpenses() {
-		if(expenseCrop.size() > 0) {
-			for (int i = 0; i < expenseCrop.size(); i++) {
-				totalValueOfExpense += expenseCrop.get(i).getPrice();
-			}
-		}
-	} 
-	
+
 	public int getDaysBetweenTwoDates() {
 		return (int) DAYS.between(seedTime, LocalDate.now());
 	}
@@ -112,12 +104,25 @@ public class Crop {
 	 }
 	 
 	 public double calculateTotalValueOfExpenses() {
-		 for(int i = 0; i < expenseCrop.size(); i++) {
-			 totalValueOfExpense += expenseCrop.get(i).getPrice();
+		 double totalValueOfExpense = 0;
+		 if(expenseCrop.size() > 0) {
+			 for(int i = 0; i < expenseCrop.size(); i++) {
+				 totalValueOfExpense += expenseCrop.get(i).getPrice();
+			 }
+			 return totalValueOfExpense;
 		 }
-		 return totalValueOfExpense;
+		 else 
+			 return 0;
+		 
 	 }
-	
+	 
+	 public boolean validateGrowthRateCrop(LocalDate dateEntry) {
+		 if(dateEntry.until(LocalDate.now(), DAYS) > specie.getMaximunDuration()) {
+			 return true;
+		 }
+		 return false;
+	 }
+
 	public byte getId() {
 		return id;
 	}
@@ -170,15 +175,30 @@ public class Crop {
 		return expenseCrop;
 	}
 	
+	public void setInitialCapital(double initialCapital) {
+		this.initialCapital = initialCapital;
+	}
+	
+	public double getInitialCapital() {
+		return this.initialCapital;
+	}
+
+	 public String toStringInCourse() {
+		 return (TYPE_PLANT + specie.getLabel() + SPACE + 
+				 ID + id + SPACE +
+				 GROUND + ground + SPACE +
+				 INIITAL_CAPITAL +  + initialCapital +  SPACE +
+				 DATE_OF_CREATION + seedTime + SPACE); 
+	 }
+//	
 	@Override
 	public String toString() {
 		return (TYPE_PLANT + specie.getLabel() + SPACE +
 				ID + id  + SPACE +
-				TOTAL_VALUE_EXPENSES + this.calculateTotalValueOfExpenses() + SPACE + 
+				TOTAL_VALUE_EXPENSES + expenseCropFinished + SPACE + 
 				SOLD_PACKAGE + productionObtained + SPACE +
 				PRICE_PER_PACKAGE + salePriceperpackage + SPACE +
 				SEPARATOR_LINE + SPACE +
-				TOTAL + ((productionObtained * salePriceperpackage) - this.calculateTotalValueOfExpenses()) + "\n");
+				TOTAL + ((productionObtained * salePriceperpackage) - expenseCropFinished) + "\n");
 	}
 }
-
