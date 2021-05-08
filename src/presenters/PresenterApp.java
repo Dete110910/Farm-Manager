@@ -19,7 +19,7 @@ public class PresenterApp {
 		//String nameOfFarm = console.readNameOfFarm();
 		//double[] grounds = console.readGrounds();
 		//console.readInitialCapital()
-		farm = new Farm("la granja", 100, 200, 300, 123);
+		farm = new Farm("la granja", 100, 100, 200, 123);
 		this.runApp();
 	}
 	
@@ -369,7 +369,7 @@ public class PresenterApp {
 	private void createCrop() {
 	farm.addCropTypeInProgress(PlantSpecie.POTATO,LocalDate.of(2021, 02, 20), 30, farm.calculateEstimatedProduction(PlantSpecie.POTATO,1), 2000);
 	farm.addCropTypeInProgress(PlantSpecie.VETCH,LocalDate.of(2021, 02, 20), 10, farm.calculateEstimatedProduction(PlantSpecie.VETCH,2), 400);
-	farm.addCropTypeInProgress(PlantSpecie.CORN,LocalDate.of(2021, 02, 20), 15, farm.calculateEstimatedProduction(PlantSpecie.CORN,3), 5000);
+	farm.addCropTypeInProgress(PlantSpecie.CORN,LocalDate.of(2021, 02, 20), 20, farm.calculateEstimatedProduction(PlantSpecie.CORN,3), 5000);
 	farm.addCropTypeInProgress(PlantSpecie.BEANS,LocalDate.of(2021, 02, 20), 15, farm.calculateEstimatedProduction(PlantSpecie.BEANS,4), 700);
 	farm.addCropTypeInProgress(PlantSpecie.POTATO,LocalDate.of(2021, 02, 20), 20, farm.calculateEstimatedProduction(PlantSpecie.POTATO,5), 120);
 	farm.addCropTypeInProgress(PlantSpecie.CORN,LocalDate.of(2021, 02, 20), 50, farm.calculateEstimatedProduction(PlantSpecie.CORN,6), 200);
@@ -617,16 +617,21 @@ public class PresenterApp {
 		byte option = console.readOptionMenuChickenCoop();
 		switch(option) {
 			case 1:
-				this.manageAddChickenPoo();
+				this.manageAddChickenCoop();
+				break;
+				
+			case 0:
+				this.runApp();
 				break;
 		}
 	}
 	
-	private void manageAddChickenPoo() {
-		int numberOfChickens = console.readNumberOfChickensInCoop();
+	private void manageAddChickenCoop() {
 		LocalDate dateOfCreation = console.readDateOfCreationChickenPoo();
+		int numberOfChickens = console.readNumberOfChickensInCoop();
 		double initialInvestment = console.readInitialInvestmentChickenCoop();
-		
+		farm.addCorral(numberOfChickens, dateOfCreation, initialInvestment);
+		this.manageAddChickenCoop();
 	}
 	
 	private void managerOfDeaper() {

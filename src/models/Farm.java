@@ -20,7 +20,8 @@ public class Farm {
 	private double groundAvailableOfCrops;
 	private byte currentCrops;
 	private GroupBovine bovines;
-
+	private ArrayList<Corral> corralList;
+	private byte currentCorrals;
 	
 	public Farm(String name, double groundOfCrops, double groundOfAnimals, double totalGround, double initialCapital) {
 		this.name = name;
@@ -32,7 +33,7 @@ public class Farm {
 		this.bovines = new GroupBovine();
 		cropsInProgress = new ArrayList<Crop>();
 		finishedCrops = new ArrayList<Crop>();
-		
+		corralList = new ArrayList<Corral>();
 	}
 	
 	public void addCropTypeInProgress(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown, double initialCapital) {
@@ -301,6 +302,35 @@ public class Farm {
 		return listPercentageOfCrops;
 	}
 	
+	public void addCorral(int numberChicken, LocalDate creationDate, double initialInvestmen) {
+		currentCorrals++;
+		corralList.add(new Corral(numberChicken, creationDate, initialInvestmen, currentCorrals));
+	}
+	
+	public double getCapital() {
+		return capital;
+	}
+
+	public void setCapital(double capital) {
+		this.capital = capital;
+	}
+
+	public GroupBovine getBovines() {
+		return bovines;
+	}
+
+	public void setBovines(GroupBovine bovines) {
+		this.bovines = bovines;
+	}
+
+	public ArrayList<Corral> getCorralList() {
+		return corralList;
+	}
+
+	public void setCorralList(ArrayList<Corral> corralList) {
+		this.corralList = corralList;
+	}
+
 	public String getName() {
 		return name;
 	}

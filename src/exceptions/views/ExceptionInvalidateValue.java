@@ -1,6 +1,6 @@
 package exceptions.views;
 
-public class ExceptionInvalidateValue extends NumberFormatException{
+public class ExceptionInvalidateValue extends Exception{
 	
 	private static final long serialVersionUID = 1L;
 	

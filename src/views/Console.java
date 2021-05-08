@@ -77,7 +77,9 @@ public class Console {
 	public static final String MESSAGE_FOR_SAVED_CROP = "\n¡¡¡Cultivo guardado con exito!!!";
 	public static final String MESSAGE_FOR_VOID_LIST = "\n***Aún no hay elementos en esta lista***\n"; 
 	public static final String MESSAGE_FOR_SHOW_NUMBER_CROPS_BY_SPECIE_FINISHED = "Mostrar el número de cultivos por especie terminados.";
-	public static final String MESSAGE_FOR_WAY_TO_ADD_CROP = "\n   1.Añadir un cultivo en curso.	\n   2.Añadir un cultivo finalizado. \n   0.Volver atrás"; 
+	public static final String MESSAGE_FOR_WAY_TO_ADD_CROP = "\n   1.Añadir un cultivo en curso."
+														   + "\n   2.Añadir un cultivo finalizado."
+														   + "\n   0.Volver atrás"; 
 	public static final String MESSAGE_FOR_READ_VALUE_EXPENSE_CROP_FINISHED = "\nPor favor, ingrese sus gastos totales para este cultivo";
 	public static final String MESSAGE_FOR_READ_VALUE_INITIAL_EXPENSE_CROP_IN_PROGRESS = "\nPor favor, ingrese la cantidad que invirtió de dinero en este cultivo";
 	public static final String MESSAGE_FOR_READ_VALUE_OF_SOLD_PACKAGES = "Por favor, ingrese la cantidad de bultos vendidos"; 
@@ -211,9 +213,15 @@ public class Console {
 		System.out.println(MESSAGE_CHOOSE_OPTION);
 		System.out.println(MESSAGE_MAIN_MENU);
 		String option = scanner.nextLine().trim();
-		if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 6) {
-			System.err.println(ERROR_INVALID_OPTION);
-			return readOptionMainMenu();
+		try {
+			if(!isNumeric(option) || Byte.parseByte(option) < 1 || Byte.parseByte(option) > 6) {
+				System.err.println(ERROR_INVALID_OPTION);
+				return readOptionMainMenu();
+			}
+		}
+		catch(NumberFormatException e) {
+			System.out.println(e.getMessage());
+			this.readOptionMainMenu();
 		}
 		return Byte.parseByte(option); 
 	}
@@ -244,8 +252,7 @@ public class Console {
 			Double.parseDouble(string.trim());
 			return true;
 		}
-		catch (NumberFormatException exceptionInvalidateValue){
-//			System.out.println(exceptionInvalidateValue.getMessage());
+		catch(NumberFormatException e) {
 			return false;
 		}
 	}
@@ -399,7 +406,7 @@ public class Console {
 			return this.validateDate(scanner.nextLine());
 		}
 		catch(ExceptionDate exceptionDate) {
-			System.out.println(exceptionDate.MESSAGE);
+			System.out.println(exceptionDate.getMessage());
 			return readSeedTime();
 		}
 	}
@@ -457,7 +464,6 @@ public class Console {
 			System.out.println(ERROR_INVALID_OPTION);
 			option = scanner.nextLine().trim();
 		}
-		
 		return Byte.parseByte(option);
 	}
 	
@@ -835,6 +841,7 @@ public class Console {
 		System.out.println(MESSAGE_FOR_READ_INITIAL_INVESTMEN_FOR_CHICKEN_COOP);
 		String initialInvestment = scanner.nextLine().trim();
 		while(!isNumeric(initialInvestment)){
+			System.out.println(ERROR_INVALIDATE_VALUE);
 			initialInvestment = scanner.nextLine().trim();
 		}
 		
