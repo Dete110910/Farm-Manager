@@ -1,5 +1,6 @@
 package models;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import java.time.LocalDate;
 
 public class Animal {
@@ -14,6 +15,8 @@ public class Animal {
 		this.dateOfAdmission = dateOfAdmission;
 	}
 	
+	
+
 	protected void increaseAge() {
 		age++;
 	}
@@ -23,7 +26,7 @@ public class Animal {
 	}
 	
 	public byte getAge() {
-		return age;
+		return (byte)((Math.round((double)((int) DAYS.between(dateOfAdmission, LocalDate.now()))/30)) + age);
 	}
 	
 	public void setGender(Gender gender) {

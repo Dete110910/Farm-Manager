@@ -15,18 +15,21 @@ public class Farm {
 	private ArrayList<Crop> cropsInProgress;
 	private ArrayList<Crop> finishedCrops;
 	private double totalGround;
-	private double groundOfAnimals;
 	private double groundOfCrops;
+	private double groundOfAnimals;	
 	private double groundAvailableOfCrops;
 	private byte currentCrops;
+	private GroupBovine bovines;
+
 	
-	public Farm(String name, double groundOfAnimals, double groundOfCrops, double totalGround, double initialCapital) {
+	public Farm(String name, double groundOfCrops, double groundOfAnimals, double totalGround, double initialCapital) {
 		this.name = name;
-		this.groundOfAnimals = groundOfAnimals;
 		this.groundOfCrops = groundOfCrops;
 		this.totalGround = totalGround;
+		this.groundOfAnimals = groundOfAnimals;
 		this.capital = initialCapital;
 		this.groundAvailableOfCrops = groundOfCrops;
+		this.bovines = new GroupBovine();
 		cropsInProgress = new ArrayList<Crop>();
 		finishedCrops = new ArrayList<Crop>();
 		
@@ -364,7 +367,10 @@ public class Farm {
 	public void setCurrentCrops(byte currentCrops) {
 		this.currentCrops = currentCrops;
 	}
-
+	public GroupBovine getGroupBovine() {
+		return bovines;
+	}
+	
 	
 	
 	

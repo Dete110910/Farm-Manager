@@ -36,6 +36,10 @@ public class PresenterApp {
 			case 2:
 					this.managerOfBovine();
 					break;
+					
+			case 3: 
+					this.managerOfChickenCoop();
+					break;
 		}
 	
 	}
@@ -159,6 +163,7 @@ public class PresenterApp {
 			crop.addExpense(this.getExpenseTypeCrop(typeCrop), console.readPriceExpenseTypeCrop());
 			managerCrops();
 		}
+		
 	}
 	
 	private ExpenseTypeCrop getExpenseTypeCrop(byte option) {
@@ -373,13 +378,255 @@ public class PresenterApp {
 
 	}
 
-	
+	/**
+	 * Metodo para manejar a los bovinos
+	 */
 	private void managerOfBovine() {
-		System.out.println("Vacas");
+		console.printData(console.MESSAGE_BOVINE);
+		byte option = console.readOptionMenuBovine();
+		switch (option) {
+		case 1:
+			this.manageShowMyCattle();
+			break;
+		case 2:
+			this.managerAddBovine();
+			break;
+		case 3:
+			this.managerRemoveBovine();
+			break;
+		case 4:
+			this.managerAddExpense();
+			break;
+		case 5:
+			this.managerPercentageOfExpensesByType();
+			break;
+		case 6:
+			this.managerPercentageOfNumberOfCattle();
+			break;
+		case 7:
+			this.managerPercentageOfBougthsByType();
+			break;
+		case 8:
+			this.managergetPercentagesSalesByType();
+			break;
+		case 9:
+			this.managerPercentageOfBougthsByTypeB();
+			break;
+		case 10:
+			this.managergetPercentagesSalesByTypeB();
+			break;
+		case 11:
+			this.manageExpenseTablebytype();
+			break;
+		case 0:
+			this.runApp();
+			break;
+		}
+	}
+	
+	/**
+	 * Metodo para manejar la opcion "Mi ganado" donde se muestra el ganado
+	 */
+	private void manageShowMyCattle() {
+		byte option = console.readWayOfSeeingBovines();
+		switch(option) {
+			case 1: 
+				this.managerShowCattle1();
+				break;
+			case 2:
+				this.managerShowCattle2();
+				break;
+			case 0:
+				this.managerOfBovine();
+				break;
+		}
+	}
+	
+	/**
+	 * Metodo para mostrar los bovinos por la forma numero 1
+	 */
+	private void managerShowCattle1() {
+		console.printData(farm.getGroupBovine());
+		this.manageShowMyCattle();
+	}
+	
+	/**
+	 * Metodo para mostrar los bovinos por la forma numero 2
+	 */
+	private void managerShowCattle2() {
+		byte type = console.readTypeOfBovine();
+		switch (type) {
+		case 1: 
+			console.validateLengthOfLists(farm.getGroupBovine().getBabyCattle());
+			this.managerShowCattle2();
+			break;
+		case 2:
+			console.validateLengthOfLists(farm.getGroupBovine().getLevantCattle());
+			this.managerShowCattle2();
+			break;
+		case 3:
+			console.validateLengthOfLists(farm.getGroupBovine().getFatteningCattle());
+			this.managerShowCattle2();
+			break;
+		case 4:
+			console.validateLengthOfLists(farm.getGroupBovine().getDairyCattle());
+			this.managerShowCattle2();
+			break;
+		case 0:
+			manageShowMyCattle();
+			break;
+		}
+	}
+	
+	/**
+	 * Metodo para añadir un bovino
+	 */
+	private void managerAddBovine() {
+		createCattle();
+		float purchaseValue = console.readPurchaseValueOfTheBovine();
+		byte age = (byte)console.readBovineAge();
+		Gender gender = farm.getGroupBovine().determineGender(console.readGenderOfBovine());
+		LocalDate dateOfAdmission = console.readDateOfAdmission(age);
+		farm.getGroupBovine().addBovine(new Bovine(purchaseValue, age, gender, dateOfAdmission));
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para crear bovino quemados
+	 */
+	private void createCattle() {
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte) 5, Gender.MALE, LocalDate.now()));
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte) 4, Gender.FEMALE, LocalDate.now()));
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)13, Gender.MALE, LocalDate.now()));
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)16, Gender.FEMALE, LocalDate.now()));
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)20, Gender.MALE, LocalDate.now()));
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)2, Gender.MALE, LocalDate.of(2021, 01, 5))); //Este se compro baby pero si se revisa ahora debe estar en levante
+	}
+	
+	/**
+	 * Metodo para crear gastos quemados
+	 */
+	private void createExpenses() {
+		farm.getGroupBovine().addExpense(1, 2, 1000);
+		farm.getGroupBovine().addExpense(2, 2, 2000);
+		farm.getGroupBovine().addExpense(3, 2, 4000);
+		farm.getGroupBovine().addExpense(4, 2, 3000);
+	}
+	
+	/**
+	 * Metodo para eliminar un bovino por Id
+	 */
+	private void managerRemoveBovine() {
+		byte type = console.readTypeOfBovine();
+		switch (type) {
+		case 1: 
+			console.validateLengthOfLists(farm.getGroupBovine().getBabyCattle());
+			farm.getGroupBovine().removeBovine((byte) console.readIdBovineRemove(), console.readBovineSaleValue());
+			this.managerOfBovine();
+			break;
+		case 2:
+			console.validateLengthOfLists(farm.getGroupBovine().getLevantCattle());
+			farm.getGroupBovine().removeBovine((byte) console.readIdBovineRemove(), console.readBovineSaleValue());
+			this.managerOfBovine();
+			break;
+		case 3:
+			console.validateLengthOfLists(farm.getGroupBovine().getFatteningCattle());
+			farm.getGroupBovine().removeBovine((byte) console.readIdBovineRemove(), console.readBovineSaleValue());
+			this.managerOfBovine();
+			break;
+		case 4:
+			console.validateLengthOfLists(farm.getGroupBovine().getDairyCattle());
+			farm.getGroupBovine().removeBovine((byte) console.readIdBovineRemove(), console.readBovineSaleValue());
+			this.managerOfBovine();
+			break;
+		case 0:
+			managerOfBovine();
+			break;
+		}
+	}
+	
+	/**
+	 * Metodo para añadir un gasto a un sub Grupo de bovinos
+	 */
+	private void managerAddExpense() {
+		byte type = console.readTypeOfBovine();
+		byte typeExpense = console.readExpenseTypeBovine();
+		double value = console.readPriceExpenseTypeCrop();
+		farm.getGroupBovine().addExpense(type, typeExpense, value);
+		this.createExpenses();
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir el porcentaje de gastos por tipo de Bovino
+	 */
+	private void managerPercentageOfExpensesByType() {
+		new PrintHashMap(farm.getGroupBovine().obtainExpensePercentagesByType(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_EXPENSES_BY_TYPE_BOVINE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir el porcentaje de animales por tipo
+	 */
+	private void managerPercentageOfNumberOfCattle() {
+		new PrintHashMap(farm.getGroupBovine().obtainPercentageOfNumberOfCattle(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_CUANTITY_OF_ANIMAL_BY_TYPE_BOVINE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir los porcentajes de compras(por cantidad) por tipo
+	 */
+	private void managerPercentageOfBougthsByType() {
+		new PrintHashMap(farm.getGroupBovine().getPercentageOfBoughtByType(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_BOUGHTS_BY_TYPE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir los porcentajes de compras(por valor) por tipo
+	 */
+	private void managerPercentageOfBougthsByTypeB() {
+		new PrintHashMap(farm.getGroupBovine().getPercentageOfBoughtByTypeB(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_SOLDS_BY_TYPE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir los porcentajes de ventas(en cantidad) por tipo
+	 */
+	private void managergetPercentagesSalesByType() {
+		new PrintHashMap(farm.getGroupBovine().getPercentagesSalesByType(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_PURCHASES_BY_TYPE_BOVINE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir los porcentajes de ventas(en cantidad) por tipo
+	 */
+	private void managergetPercentagesSalesByTypeB() {
+		new PrintHashMap(farm.getGroupBovine().getPercentagesSalesByTypeB(), console.MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_SOLDS_BY_TYPE_BOVINE);
+		this.managerOfBovine();
+	}
+	
+	/**
+	 * Metodo para imprimir la tabla de gastos por tipo de bovino
+	 */
+	private void manageExpenseTablebytype() {
+		console.printExpesesByCrop(farm.getGroupBovine().generateExpenseTableByType(console.readTypeOfBovine()));
+		this.managerOfBovine();
 	}
 	
 	private void managerOfChickenCoop() {
-		System.out.println("Pollos");
+		byte option = console.readOptionMenuChickenCoop();
+		switch(option) {
+			case 1:
+				this.manageAddChickenPoo();
+				break;
+		}
+	}
+	
+	private void manageAddChickenPoo() {
+		int numberOfChickens = console.readNumberOfChickensInCoop();
+		LocalDate dateOfCreation = console.readDateOfCreationChickenPoo();
+		double initialInvestment = console.readInitialInvestmentChickenCoop();
+		
 	}
 	
 	private void managerOfDeaper() {
@@ -387,6 +634,13 @@ public class PresenterApp {
 	}
 	
 	
+	
+
+
+
+
+	
+
 	
 
 
