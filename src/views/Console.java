@@ -125,11 +125,11 @@ public class Console {
 	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_GROWTH_RATE = "\n\tPorcentaje de crecimiento por cultivo\n"; 
 	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_CROPS = "\n\tPorcentaje de la cantidad de cultivos en toda la granja\n"; 
 	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_EXPENSES_BY_TYPE_BOVINE = "\n\tPorcentaje de gastos por tipo de bovino"; 
-	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_CUANTITY_OF_ANIMAL_BY_TYPE_BOVINE = "\n\tPorcentaje de número de bovinos por tipo"; 
-	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_BOUGHTS_BY_TYPE = "\n\tPorcentaje de cantidad de compras por tipo de bovino"; 
-	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_SOLDS_BY_TYPE = "\n\tPorcentaje de cantidad de ventas por tipo de bovino"; 
-	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_PURCHASES_BY_TYPE_BOVINE = "\n\tPorcentaje de dinero en compras por tipo"; 
-	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_SOLDS_BY_TYPE_BOVINE = "\n\tPorcentaje de dinero en ventas por tipo";
+	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_CUANTITY_OF_ANIMAL_BY_TYPE_BOVINE = "\n\tPorcentaje de número de bovinos por tipo\n"; 
+	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_BOUGHTS_BY_TYPE = "\n\tPorcentaje de cantidad de compras por tipo de bovino\n"; 
+	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_SOLDS_BY_TYPE = "\n\tPorcentaje de cantidad de ventas por tipo de bovino\n"; 
+	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_PURCHASES_BY_TYPE_BOVINE = "\n\tPorcentaje de dinero en compras por tipo\n"; 
+	public static final String MESSAGE_GRAPHIC_FOR_PERCENTAGE_OF_MONEY_INVESTED_IN_SOLDS_BY_TYPE_BOVINE = "\n\tPorcentaje de dinero en ventas por tipo\n";
 	public static final String MESSAGE_BOVINE = "\n		Bovinos";
 	public static final String MESSAGE_BOVINE_MENU = "\n 1.Mi ganado.\n 2.Añadir bovino.\n 3.Eliminar un bovino.\n 4.Añadir gastos.\n 5.Obtener porcentaje de gastos por tipo.\n 6.Obtener porcentajes de animales por tipo\n 7.Obtener porcentajes de compras (en cantidad) por tipo\n 8.Obtener porcentajes de ventas (en cantidad) por tipo\n 9.Obtener porcentajes de compras(en valor) por tipo.\n 10.Obtener porcentjaes de ventas(en valor) por tipo.\n 11.Mostrar tabla de gastos(concepto - valor) por tipo\n 0.Volver atrás"; 
 	public static final String MESSAGE_FOR_CHOOSE_TYPE_BOVINE = "\nPor favor elija el tipo de bovino"

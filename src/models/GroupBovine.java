@@ -243,15 +243,15 @@ public class GroupBovine {
 	 * @return
 	 */
 	public HashMap<String, Double> obtainPercentageOfNumberOfCattle(){
-		double numberbabyCattle = babyCattle.size();
-		double numberlevantCattle = levantCattle.size();
-		double numberfatteningCattle = fatteningCattle.size();
+		double numberBabyCattle = babyCattle.size();
+		double numberLevantCattle = levantCattle.size();
+		double numberFatteningCattle = fatteningCattle.size();
 		double numberDairyCattle = dairyCattle.size();
-		double totalCattle = numberbabyCattle + numberlevantCattle + numberfatteningCattle + numberDairyCattle;
+		double totalCattle = numberBabyCattle + numberLevantCattle + numberFatteningCattle + numberDairyCattle;
 		HashMap<String, Double> percentages = new HashMap<String, Double>();
-		percentages.put(TypeBovine.BABY_CATTLE.getLabel(),(double)(numberbabyCattle * HUNDRED_PERCENT)/totalCattle);
-		percentages.put(TypeBovine.LEVANT_CATTLE.getLabel(),(double)(numberlevantCattle * HUNDRED_PERCENT)/totalCattle);
-		percentages.put(TypeBovine.FATTENING_CATTLE.getLabel(),(double)(numberfatteningCattle * HUNDRED_PERCENT)/totalCattle);
+		percentages.put(TypeBovine.BABY_CATTLE.getLabel(),(double)(numberBabyCattle * HUNDRED_PERCENT)/totalCattle);
+		percentages.put(TypeBovine.LEVANT_CATTLE.getLabel(),(double)(numberLevantCattle * HUNDRED_PERCENT)/totalCattle);
+		percentages.put(TypeBovine.FATTENING_CATTLE.getLabel(),(double)(numberFatteningCattle * HUNDRED_PERCENT)/totalCattle);
 		percentages.put(TypeBovine.DAIRY_CATTLE.getLabel(),(double)(numberDairyCattle * HUNDRED_PERCENT)/totalCattle);
 		return percentages;
 	}

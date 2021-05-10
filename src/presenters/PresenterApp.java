@@ -382,6 +382,7 @@ public class PresenterApp {
 	 * Metodo para manejar a los bovinos
 	 */
 	private void managerOfBovine() {
+		createCattle();
 		console.printData(console.MESSAGE_BOVINE);
 		byte option = console.readOptionMenuBovine();
 		switch (option) {
@@ -482,7 +483,6 @@ public class PresenterApp {
 	 * Metodo para añadir un bovino
 	 */
 	private void managerAddBovine() {
-		createCattle();
 		float purchaseValue = console.readPurchaseValueOfTheBovine();
 		byte age = (byte)console.readBovineAge();
 		Gender gender = farm.getGroupBovine().determineGender(console.readGenderOfBovine());
@@ -500,7 +500,7 @@ public class PresenterApp {
 		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)13, Gender.MALE, LocalDate.now()));
 		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)16, Gender.FEMALE, LocalDate.now()));
 		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)20, Gender.MALE, LocalDate.now()));
-		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)2, Gender.MALE, LocalDate.of(2021, 01, 5))); //Este se compro baby pero si se revisa ahora debe estar en levante
+		farm.getGroupBovine().addBovine(new Bovine(50000, (byte)2, Gender.MALE, LocalDate.of(2021, 01, 5))); 
 	}
 	
 	/**

@@ -278,12 +278,10 @@ public class Farm {
 		for(int i = 0; i < cropsInProgress.size(); i++) {
 			if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
 				listOfCropsAux[0] += 1;
-				System.out.println("Sumo una");
 			} 
 			
 			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.VETCH)) {
 				listOfCropsAux[1] += 1;
-				System.out.println("Sumo vetch");
 			}
 			
 			else if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.BEANS)) {
@@ -298,7 +296,6 @@ public class Farm {
 		listPercentageOfCrops.put(PlantSpecie.BEANS.getLabel(), (listOfCropsAux[2] * HUNDRED_PERCENT) / cropsInProgress.size());
 		listPercentageOfCrops.put(PlantSpecie.CORN.getLabel(), (listOfCropsAux[3] * HUNDRED_PERCENT) / cropsInProgress.size());
 		
-		//System.out.println(cropsInProgress + " Lista");
 		return listPercentageOfCrops;
 	}
 	
