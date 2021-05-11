@@ -4,10 +4,8 @@ public class ExpenseBovine {
 
 	private ExpenseTypeBovine expenseTypeBovine; 
 	private double price;
-	private TypeBovine typeBovine;
 	
-	ExpenseBovine(TypeBovine typeBovine, ExpenseTypeBovine expenseTypeBovine, double price){
-		this.typeBovine = typeBovine;
+	public ExpenseBovine(ExpenseTypeBovine expenseTypeBovine, double price){
 		this.expenseTypeBovine = expenseTypeBovine;
 		this.price = price;
 	}
@@ -27,15 +25,4 @@ public class ExpenseBovine {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
-	public TypeBovine getTypeBovine() {
-		return typeBovine;
-	}
-
-	public void setTypeBovine(TypeBovine typeBovine) {
-		this.typeBovine = typeBovine;
-	}
-	
-	
-	
 }
