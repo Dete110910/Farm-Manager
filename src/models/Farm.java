@@ -23,6 +23,14 @@ public class Farm {
 	private ArrayList<Corral> corralList;
 	private byte currentCorrals;
 	
+	/**
+	 * Método que permite crear una granja
+	 * @param name Nombre de la granja
+	 * @param groundOfCrops Terreno disponible para los cultivos
+	 * @param groundOfAnimals Terreno disponible para los animales
+	 * @param totalGround Terreno total de la granja
+	 * @param initialCapital Capital inicial con el que se crea la granja
+	 */
 	public Farm(String name, double groundOfCrops, double groundOfAnimals, double totalGround, double initialCapital) {
 		this.name = name;
 		this.groundOfCrops = groundOfCrops;
@@ -36,12 +44,28 @@ public class Farm {
 		corralList = new ArrayList<Corral>();
 	}
 	
+	/**
+	 * Método para añadir un cultivo en progreso
+	 * @param plantSpecie Tipo de planta del que se creará el cultivo
+	 * @param dateOfCreation Fecha de creación del cultivo
+	 * @param ground Terreno ocupado por el cultivo
+	 * @param amountSown Cantidad de semillas sembradas 
+	 * @param initialCapital Capital inicial invertido en el cultivo
+	 */
 	public void addCropTypeInProgress(PlantSpecie plantSpecie, LocalDate dateOfCreation, double ground, double[] amountSown, double initialCapital) {
 		currentCrops++;
 		cropsInProgress.add(new Crop(plantSpecie, dateOfCreation, ground, amountSown, initialCapital, currentCrops));
 	}
 	
-	
+	/**
+	 * Método para añdir un cultivo finalizado 
+	 * @param specie Tipo de planta del que se registrará el cultivo
+	 * @param seedTime Fecha de siembra del cultivo 
+	 * @param expenseCropFinished Valor total de los gastos del cultivo
+	 * @param productionObtained Producción de producto obtenida por el cultivo
+	 * @param salePricePerPackage Precio al que se vendió cada bulto generado por el cultivo
+	 * @param id Id que se desea asignar al cultivo finalizado
+	 */
 	public void addCropTypeFinished(PlantSpecie specie, LocalDate seedTime,  double expenseCropFinished, double productionObtained, double salePricePerPackage, byte id){
 		finishedCrops.add(new Crop(specie, seedTime, expenseCropFinished, productionObtained,salePricePerPackage, id));
 	}
@@ -82,29 +106,47 @@ public class Farm {
 		return production;
 	}
 	
-	
+	/**
+	 * Método para determinar si el terreno que se desea designar a un cultivo está disponible
+	 * @param ground Terreno que se desea verificar 
+	 * @return false: el terreno que se desea designar al terreno está disponible. true: el terreno que se desea designar para el cultivo no está disponible
+	 */
 	public boolean itIsBigger(double ground) {
 		if(ground <= groundAvailableOfCrops) {
 			return false;
 		}
 		return true;
 	}
-	
+	/**
+	 * Método para decrementar el capital total según un gasto que se presente
+	 * @param expense Gasto que se desea restar al capital total de la granja
+	 * @return Capital total luego de haberle restado el valor del gasto
+	 */
 	public double decreaseCapitalFarm(double expense) {
 		capital = capital - expense;
 		return capital;
 	}
-	
+	/**
+	 * Método para incrementar el capital total según la venta que se presente
+	 * @param sell Venta que se desea sumar al capital total de la granja
+	 * @return Capital total luego de haberle sumado el valor de la venta
+	 */
 	public double increaseCapital(double sell) {
 		capital = capital + sell;
 		return capital;
 	}
-	
+	/**
+	 * Método para devolver el terreno ocupado por un cultivo luego de finalizarse
+	 * @param ground Terreno que se desea agregar al total de la granja
+	 */
 	public void increaseGroundOfCrops(double ground) {
 		groundAvailableOfCrops += ground;
 	}
 	
-	
+	/**
+	 * Método para obtener el número de cultivos en progreso por especie 
+	 * @return Vector con la cantidad de cultivos en progreso por especie
+	 */
 	public int[] getNumberOfCropsByPlantSpecieInProgress() {
 		int[] cropsInProgressAux = new int[4];
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -128,7 +170,10 @@ public class Farm {
 		
 	}
 	
-	
+	/**
+	 * Método para determinar la cantidad de cultivos finalizados por especie
+	 * @return Vector con la cantidad de cultivos finalizados por especie
+	 */
 	public int[] getNumberOfCropsByPlantSpecieFinished() {
 		int[] cropsFinishedAux = new int[4];
 		for(int i = 0; i < finishedCrops.size(); i++) {
@@ -149,7 +194,11 @@ public class Farm {
 		return cropsFinishedAux;
 	}
 	
-	
+	/**
+	 * Método para determinar el porcentaje de crecimiento de cada cultivo según un tipo dado
+	 * @param plantSpecie Tipo de cultivo que se usará para determinar el porcentaje de crecimiento 
+	 * @return HashMap con los id de cada cultivo y su respectivo porcentaje de crecimiento 
+	 */
 	public HashMap<String, Double> getPercentageGrowthRateByPlantSpecie(PlantSpecie plantSpecie) {
 		HashMap<String, Double> cropsList = new HashMap<String, Double>();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -160,7 +209,10 @@ public class Farm {
 		return cropsList;
 	}
 	
-	
+	/**
+	 * Método para determinar el porcentaje de tierra ocupada por cada tipo de cultivo 
+	 * @return HashMap con el tipo de cultivo y su respectivo porcentaje de tierra ocupada
+	 */
 	public  HashMap<String, Double> getPercetageOfLandOcuppiedBySpecie(){
 		HashMap<String, Double> landOcuppied = new HashMap<String, Double>();
 		double[] landOcuppiedAux = new double[4];
@@ -190,7 +242,11 @@ public class Farm {
 		
 	}
 	
-	
+	/**
+	 * Método para determinar el id de los cultivos según un tipo de cultivo dado
+	 * @param plantSpecie Tipo de cultivo que se usará para determinar el id de los que lo compartan
+	 * @return ArrayList con los id de cada cultivo según un tipo de cultivo dado
+	 */
 	public ArrayList<Byte> getCropByPlantSpecie(PlantSpecie plantSpecie){
 		ArrayList<Byte> expenseList = new ArrayList<Byte>();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -201,7 +257,11 @@ public class Farm {
 		return expenseList;
 	}
 	
-
+	/**
+	 * Método para encontrar un cultivo según un id dado
+	 * @param id Id usado para encontrar un cultivo 
+	 * @return Cultivo que tenga el id dado
+	 */
 	public Crop getCropById(byte id) {
 		Crop cropAux = null;
 		boolean flag = true;
@@ -214,14 +274,21 @@ public class Farm {
 		return cropAux;
 	}
 	
-	
-	
+	/**
+	 * Método para determinar los gastos de un cultivo por su id
+	 * @param id Id usado para determinar el cultivo al que se le obtendrán los gastos
+	 * @return Matriz de Strings con los gastos del cultivo determinado
+	 */
 	public String[][] getExpensesByIdCrop(byte id){
 		Crop cropAux = this.getCropById(id);
 		String[][] expensesList = cropAux.getExpenses();
 		return expensesList;
 	}
 	
+	/**
+	 * Método para validar la cantidad de cultivos que están listos para cosechar
+	 * @return Número de cultivos listos para cosechar
+	 */
 	public byte validateGrowthOfCrop() {
 		byte numberOfCropsGrown = 0;
 		for(int i = 0; i < cropsInProgress.size(); i++) {
@@ -232,15 +299,23 @@ public class Farm {
 		return numberOfCropsGrown;
 	}
 	
+	/**
+	 * Método para eliminar un cultivo en progreso
+	 * @param cropInProgress Cultivo a eliminar 
+	 */
 	public void deleteCropInProgress(Crop cropInProgress) {
 		cropsInProgress.remove(cropInProgress);
 	
 	}
 	
+	/**
+	 * Método para determinar el porcentaje de gastos por tipo de cultivo
+	 * @return HashMap con el tipo de cultivo y el porcentaje de gastos del mismo
+	 */
 	public HashMap<String, Double> getPercentageOfExpensesByTypeCrop(){
 		HashMap<String, Double> listOfExpenses = new HashMap<String, Double>();
 		double[] expenses = new double[4];
-		double totalExpenses = this.getTotalExpenses();
+		double totalExpenses = this.getTotalExpensesByCropsInProgress();
 		for(int i = 0; i < cropsInProgress.size(); i++) {
 			if(cropsInProgress.get(i).getSpecie().equals(PlantSpecie.POTATO)) {
 				expenses[0] += cropsInProgress.get(i).calculateTotalValueOfExpenses();
@@ -263,7 +338,11 @@ public class Farm {
 		return listOfExpenses;
 	}
 	
-	public double getTotalExpenses() {
+	/**
+	 * Método para obtener la cantidad total de gastos de cultivos en progreso
+	 * @return Cantidad total de gastos
+	 */
+	public double getTotalExpensesByCropsInProgress() {
 		double totalExpenses = 0;
 		for(int i = 0; i < cropsInProgress.size(); i++) {
 			totalExpenses += cropsInProgress.get(i).calculateTotalValueOfExpenses();
@@ -271,7 +350,10 @@ public class Farm {
 		return totalExpenses;
 	}
 	
-	
+	/**
+	 * Método para determinar el porcentaje correspondiente de cada tipo de cultivo en la granja
+	 * @return HashMap con el tipo de cultivo y el porcentaje que hay de este en la granja
+	 */
 	public HashMap<String, Double> getPercentageOfCrops(){
 		HashMap<String, Double> listPercentageOfCrops = new HashMap<String, Double>();
 		double[] listOfCropsAux = new double[4];
@@ -299,6 +381,12 @@ public class Farm {
 		return listPercentageOfCrops;
 	}
 	
+	/**
+	 * Método para añadir un corral
+	 * @param numberChicken Número de gallinas con el que se iniciará el corral
+	 * @param creationDate Fecha de creación del corral
+	 * @param initialInvestmen Inversión inicial del corral
+	 */
 	public void addCorral(int numberChicken, LocalDate creationDate, double initialInvestmen) {
 		currentCorrals++;
 		corralList.add(new Corral(numberChicken, creationDate, initialInvestmen, currentCorrals));

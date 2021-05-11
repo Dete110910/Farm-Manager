@@ -328,7 +328,7 @@ public class PresenterApp {
 						break;
 					case 2:
 						this.manageEndCrop();
-						break;
+						break;						
 			}
 		}
 		else {
@@ -619,6 +619,8 @@ public class PresenterApp {
 			case 1:
 				this.manageAddChickenCoop();
 				break;
+				
+			case 2: 
 				
 			case 0:
 				this.runApp();

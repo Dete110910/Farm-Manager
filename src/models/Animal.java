@@ -15,18 +15,20 @@ public class Animal {
 		this.dateOfAdmission = dateOfAdmission;
 	}
 	
+	/*
+	 * Método para determinar la edad de un animal dad su fecha de admisión
+	 * @return Edad del animal dada su fecha de admisión
+	 */
+	public byte getAge() {
+		return (byte)((Math.round((double)((int) DAYS.between(dateOfAdmission, LocalDate.now()))/30)) + age);
+	}
 	
-
 	protected void increaseAge() {
 		age++;
 	}
 	
 	public void setAge(byte age) {
 		this.age = age;
-	}
-	
-	public byte getAge() {
-		return (byte)((Math.round((double)((int) DAYS.between(dateOfAdmission, LocalDate.now()))/30)) + age);
 	}
 	
 	public void setGender(Gender gender) {
@@ -45,6 +47,4 @@ public class Animal {
 		return dateOfAdmission;
 	}
 	
-	
-
 }
